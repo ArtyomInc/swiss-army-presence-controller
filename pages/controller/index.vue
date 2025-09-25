@@ -7,16 +7,13 @@
       </CardHeader>
       <CardContent>
         <MultiField v-model="sectionsModel" block-empty placeholder="Kdo, Rep, Mun, etc." />
-        <div class="mt-2 text-sm text-muted-foreground">
-          Debug: {{ sectionsModel.length }} sections dans le modèle, {{ sectionNames.length }} sections dans le store
-        </div>
       </CardContent>
       <CardFooter class="flex justify-between">
         <div class="text-sm text-muted-foreground">
-          {{ sectionsModel.length }} section{{ sectionsModel.length > 1 ? 's' : '' }} configurée{{ sectionsModel.length > 1 ? 's' : '' }}
+          Debug: {{ sectionsModel.length }} sections dans le modèle, {{ sectionNames.length }} sections dans le store
         </div>
-        <Link href="/controller/register" :class="{ 'pointer-events-none opacity-50': sectionsModel.length === 0 }"> 
-          Suivant <Icon name="lucide:arrow-right" size="20" /> 
+        <Link href="/controller/register" :class="{ 'pointer-events-none opacity-50': sectionsModel.length === 0 }">
+          Suivant <Icon name="lucide:arrow-right" size="20" />
         </Link>
       </CardFooter>
     </Card>
@@ -37,28 +34,107 @@
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <Link href="/controller/presences" class="w-full">
+      <CardFooter class="flex gap-2">
+        <Link href="/controller/presences" class="flex-1">
           <Button class="w-full">
             Voir toutes les présences <Icon name="lucide:users" size="20" />
           </Button>
         </Link>
+        
       </CardFooter>
+    </Card>
+    <Card>
+      <CardHeader>
+        <CardTitle>Gestion des enregistrements</CardTitle>
+        <CardDescription>Supprimez toutes les données stockées localement</CardDescription>
+      </CardHeader>
+      <CardContent class="space-y-4">
+        <div v-if="totalPeople > 0" class="flex items-center justify-between">
+          <span>Supprimer toutes les personnes enregistrées.</span>
+          <Dialog>
+            <DialogTrigger as-child>
+              <Button
+                variant="outline"
+                size="sm"
+                class="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              >
+                <Icon name="lucide:trash-2" size="16" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Supprimer toutes les personnes</DialogTitle>
+                <DialogDescription>
+                  Êtes-vous sûr de vouloir supprimer tous les enregistrements de personnes ? Cette action est irréversible.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter class="flex justify-end gap-2">
+                <DialogClose as-child>
+                  <Button variant="outline">Annuler</Button>
+                </DialogClose>
+                <DialogClose as-child>
+                  <Button variant="destructive" @click="handleClearPeople">Supprimer</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <div v-if="sectionsModel.length > 0" class="flex items-center justify-between">
+          <span>Supprimer toutes les sections configurées.</span>
+          <Dialog>
+            <DialogTrigger as-child>
+              <Button
+                variant="outline"
+                size="sm"
+                class="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              >
+                <Icon name="lucide:trash-2" size="16" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Supprimer toutes les sections</DialogTitle>
+                <DialogDescription>
+                  Êtes-vous sûr de vouloir supprimer toutes les sections ? Cette action est irréversible.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter class="flex justify-end gap-2">
+                <DialogClose as-child>
+                  <Button variant="outline">Annuler</Button>
+                </DialogClose>
+                <DialogClose as-child>
+                  <Button variant="destructive" @click="handleClearSections">Supprimer</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardContent>
     </Card>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
 import { Link } from '@/ui/link'
 import MultiField from '~/components/MultiField.vue'
 
-const { getPeopleBySection, people, sectionNames, setSections } = usePresenceController()
+const { clearPeople, clearSections, getPeopleBySection, people, sectionNames, setSections } = usePresenceController()
 
 // Model local pour MultiField
 const sectionsModel = ref<string[]>([])
 
 // Nombre total de personnes
 const totalPeople = computed(() => people.value.length)
+
+// Fonctions de confirmation
+const handleClearSections = () => {
+  clearSections()
+}
+
+const handleClearPeople = () => {
+  clearPeople()
+}
 
 // Synchronisation unidirectionnelle : store -> modèle local
 onMounted(() => {

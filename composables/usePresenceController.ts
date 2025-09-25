@@ -112,6 +112,21 @@ export const usePresenceController = () => {
     }
   }
 
+  // Actions de suppression complète
+  const clearSections = () => {
+    sections.value = []
+    if (import.meta.client) {
+      localStorage.removeItem('presence-sections')
+    }
+  }
+
+  const clearPeople = () => {
+    people.value = []
+    if (import.meta.client) {
+      localStorage.removeItem('presence-people')
+    }
+  }
+
   // Utilitaires
   const getPeopleBySection = (sectionName: string) => {
     return people.value.filter(p => p.section === sectionName)
@@ -135,16 +150,19 @@ export const usePresenceController = () => {
     addPerson,
     // Actions sections
     addSection,
+    // Actions de suppression complète
+    clearPeople,
+    clearSections,
     // Utilitaires
     getPeopleBySection,
-    
+
     getPresenceStats,
     initializeData,
     people: readonly(people),
-    
+
     removePerson,
     removeSection,
-    
+
     sectionNames,
     // État
     sections: readonly(sections),

@@ -151,26 +151,27 @@
       </Card>
     </div>
 
-    <!-- Modal de confirmation pour la suppression -->
-    <div v-if="personToRemove" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click="cancelRemove">
-      <Card class="w-full max-w-md mx-4" @click.stop>
-        <CardHeader>
-          <CardTitle>Confirmer la suppression</CardTitle>
-          <CardDescription>
-            Êtes-vous sûr de vouloir supprimer {{ personToRemove.firstName }} {{ personToRemove.lastName }} 
-            de la section {{ personToRemove.section }} ?
-          </CardDescription>
-        </CardHeader>
-        <CardFooter class="flex justify-end gap-2">
+    <!-- Dialog de confirmation pour la suppression -->
+    <Dialog :open="!!personToRemove" @update:open="(open) => !open && cancelRemove()">
+      <DialogContent class="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Confirmer la suppression</DialogTitle>
+          <DialogDescription>
+            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.firstName }} {{ personToRemove?.lastName }}
+            de la section {{ personToRemove?.section }} ?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter class="flex justify-end gap-2">
           <Button variant="outline" @click="cancelRemove">Annuler</Button>
           <Button variant="destructive" @click="confirmRemove">Supprimer</Button>
-        </CardFooter>
-      </Card>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Link } from '@/ui/link'
 
 const { getPeopleBySection, people, removePerson, sections } = usePresenceController()
