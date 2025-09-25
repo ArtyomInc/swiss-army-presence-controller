@@ -4,6 +4,10 @@
     <section class="py-20 px-4 text-center">
       <div class="max-w-6xl mx-auto">
         <div class="mb-8">
+                <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-6">
+        <Icon name="lucide:shield-check" size="14" />
+        100% Open Source
+      </div>
           <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Swiss Army Presence Controller
           </h1>
