@@ -9,7 +9,7 @@
         <MultiField v-model="sectionsModel" block-empty placeholder="Kdo, Rep, Mun, etc." />
       </CardContent>
       <CardFooter class="flex justify-between">
-        <div class="text-sm text-muted-foreground">
+        <div class="text-muted-foreground text-sm">
           Debug: {{ sectionsModel.length }} sections dans le modèle, {{ sectionNames.length }} sections dans le store
         </div>
         <Link href="/controller/register" :class="{ 'pointer-events-none opacity-50': sectionsModel.length === 0 }">
@@ -25,10 +25,14 @@
         <CardDescription>Nombre de personnes enregistrées par section</CardDescription>
       </CardHeader>
       <CardContent>
-        <div class="grid gap-2">
-          <div v-for="section in sectionsModel" :key="section" class="flex justify-between items-center p-2 rounded border">
+        <div class="gap-2 grid">
+          <div
+            v-for="section in sectionsModel"
+            :key="section"
+            class="border flex items-center justify-between p-2 rounded"
+          >
             <span class="font-medium">{{ section }}</span>
-            <span class="text-sm text-muted-foreground">
+            <span class="text-muted-foreground text-sm">
               {{ getPeopleBySection(section).length }} personne{{ getPeopleBySection(section).length > 1 ? 's' : '' }}
             </span>
           </div>
@@ -36,11 +40,8 @@
       </CardContent>
       <CardFooter class="flex gap-2">
         <Link href="/controller/presences" class="flex-1">
-          <Button class="w-full">
-            Voir toutes les présences <Icon name="lucide:users" size="20" />
-          </Button>
+          <Button class="w-full"> Voir toutes les présences <Icon name="lucide:users" size="20" /> </Button>
         </Link>
-        
       </CardFooter>
     </Card>
     <Card>
@@ -56,7 +57,7 @@
               <Button
                 variant="outline"
                 size="sm"
-                class="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                class="hover:bg-destructive hover:text-destructive-foreground text-destructive"
               >
                 <Icon name="lucide:trash-2" size="16" />
               </Button>
@@ -65,10 +66,11 @@
               <DialogHeader>
                 <DialogTitle>Supprimer toutes les personnes</DialogTitle>
                 <DialogDescription>
-                  Êtes-vous sûr de vouloir supprimer tous les enregistrements de personnes ? Cette action est irréversible.
+                  Êtes-vous sûr de vouloir supprimer tous les enregistrements de personnes ? Cette action est
+                  irréversible.
                 </DialogDescription>
               </DialogHeader>
-              <DialogFooter class="flex justify-end gap-2">
+              <DialogFooter class="flex gap-2 justify-end">
                 <DialogClose as-child>
                   <Button variant="outline">Annuler</Button>
                 </DialogClose>
@@ -86,7 +88,7 @@
               <Button
                 variant="outline"
                 size="sm"
-                class="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                class="hover:bg-destructive hover:text-destructive-foreground text-destructive"
               >
                 <Icon name="lucide:trash-2" size="16" />
               </Button>
@@ -98,7 +100,7 @@
                   Êtes-vous sûr de vouloir supprimer toutes les sections ? Cette action est irréversible.
                 </DialogDescription>
               </DialogHeader>
-              <DialogFooter class="flex justify-end gap-2">
+              <DialogFooter class="flex gap-2 justify-end">
                 <DialogClose as-child>
                   <Button variant="outline">Annuler</Button>
                 </DialogClose>
@@ -115,9 +117,24 @@
 </template>
 
 <script setup lang="ts">
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/ui/dialog'
 import { Link } from '@/ui/link'
 import MultiField from '~/components/MultiField.vue'
+
+useSeoMeta({
+  description:
+    'Découvrez Swiss Army Presence Controller, une solution open source et gratuite pour la gestion des présences militaires. Sécurisé, local et transparent.',
+  title: 'App - Presence Controller'
+})
 
 const { clearPeople, clearSections, getPeopleBySection, people, sectionNames, setSections } = usePresenceController()
 
@@ -142,15 +159,23 @@ onMounted(() => {
 })
 
 // Synchronisation modèle local -> store quand ça change
-watch(sectionsModel, (newSections) => {
-  setSections(newSections)
-}, { deep: true })
+watch(
+  sectionsModel,
+  (newSections) => {
+    setSections(newSections)
+  },
+  { deep: true }
+)
 
 // Écouter les changements du store pour mettre à jour le modèle local
-watch(sectionNames, (newSections) => {
-  // Ne mettre à jour que si c'est différent pour éviter les boucles
-  if (JSON.stringify(sectionsModel.value) !== JSON.stringify(newSections)) {
-    sectionsModel.value = [...newSections]
-  }
-}, { immediate: true })
+watch(
+  sectionNames,
+  (newSections) => {
+    // Ne mettre à jour que si c'est différent pour éviter les boucles
+    if (JSON.stringify(sectionsModel.value) !== JSON.stringify(newSections)) {
+      sectionsModel.value = [...newSections]
+    }
+  },
+  { immediate: true }
+)
 </script>

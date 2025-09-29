@@ -7,18 +7,20 @@
           <div>
             <CardTitle>Vue d'ensemble des Présences</CardTitle>
             <CardDescription>
-              {{ totalPeople }} personne{{ totalPeople > 1 ? 's' : '' }} enregistrée{{ totalPeople > 1 ? 's' : '' }} 
+              {{ totalPeople }} personne{{ totalPeople > 1 ? 's' : '' }} enregistrée{{
+                totalPeople > 1 ? 's' : ''
+              }}
               dans {{ sections.length }} section{{ sections.length > 1 ? 's' : '' }}
             </CardDescription>
           </div>
           <div class="flex gap-2">
             <Link href="/controller/register">
-                <Icon name="lucide:user-plus" size="20" class="mr-2" />
-                Ajouter
+              <Icon name="lucide:user-plus" size="20" class="mr-2" />
+              Ajouter
             </Link>
             <Link href="/controller">
-                <Icon name="lucide:settings" size="20" class="mr-2" />
-                Sections
+              <Icon name="lucide:settings" size="20" class="mr-2" />
+              Sections
             </Link>
           </div>
         </div>
@@ -27,45 +29,48 @@
 
     <!-- État vide -->
     <Card v-if="totalPeople === 0">
-      <CardContent class="text-center py-12">
-        <Icon name="lucide:users" size="48" class="mx-auto text-muted-foreground mb-4" />
-        <h3 class="text-lg font-medium mb-2">Aucune présence enregistrée</h3>
-        <p class="text-muted-foreground mb-6">Commencez par ajouter des personnes à vos sections</p>
+      <CardContent class="py-12 text-center">
+        <Icon name="lucide:users" size="48" class="mb-4 mx-auto text-muted-foreground" />
+        <h3 class="font-medium mb-2 text-lg">Aucune présence enregistrée</h3>
+        <p class="mb-6 text-muted-foreground">Commencez par ajouter des personnes à vos sections</p>
         <Link href="/controller/register">
-            <Icon name="lucide:user-plus" size="20" class="mr-2" />
-            Enregistrer la première présence
+          <Icon name="lucide:user-plus" size="20" class="mr-2" />
+          Enregistrer la première présence
         </Link>
       </CardContent>
     </Card>
 
     <!-- Vue par section -->
-    <div v-else class="grid gap-6">
+    <div v-else class="gap-6 grid">
       <Card v-for="section in sections" :key="section.name">
         <CardHeader>
           <div class="flex items-center justify-between">
             <div>
-              <CardTitle class="flex items-center gap-2">
+              <CardTitle class="flex gap-2 items-center">
                 <Icon name="lucide:users" size="20" />
                 {{ section.name }}
               </CardTitle>
               <CardDescription>
-                {{ getPeopleBySection(section.name).length }} personne{{ getPeopleBySection(section.name).length > 1 ? 's' : '' }} présente{{ getPeopleBySection(section.name).length > 1 ? 's' : '' }}
+                {{ getPeopleBySection(section.name).length }} personne{{
+                  getPeopleBySection(section.name).length > 1 ? 's' : ''
+                }}
+                présente{{ getPeopleBySection(section.name).length > 1 ? 's' : '' }}
               </CardDescription>
             </div>
             <div class="text-right">
-              <div class="text-2xl font-bold text-primary">
+              <div class="font-bold text-2xl text-primary">
                 {{ getPeopleBySection(section.name).length }}
               </div>
             </div>
           </div>
         </CardHeader>
-        
+
         <CardContent v-if="getSortedPeopleBySection(section.name).length > 0">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('firstName', section.name)">
-                  <div class="flex items-center gap-2">
+                  <div class="flex gap-2 items-center">
                     Prénom
                     <Icon
                       v-if="getSortConfig(section.name).field === 'firstName'"
@@ -76,7 +81,7 @@
                   </div>
                 </TableHead>
                 <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('lastName', section.name)">
-                  <div class="flex items-center gap-2">
+                  <div class="flex gap-2 items-center">
                     Nom
                     <Icon
                       v-if="getSortConfig(section.name).field === 'lastName'"
@@ -86,8 +91,11 @@
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                   </div>
                 </TableHead>
-                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('hasServiceBooklet', section.name)">
-                  <div class="flex items-center gap-2">
+                <TableHead
+                  class="cursor-pointer hover:bg-muted/50"
+                  @click="toggleSort('hasServiceBooklet', section.name)"
+                >
+                  <div class="flex gap-2 items-center">
                     Livret
                     <Icon
                       v-if="getSortConfig(section.name).field === 'hasServiceBooklet'"
@@ -98,7 +106,7 @@
                   </div>
                 </TableHead>
                 <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('registeredAt', section.name)">
-                  <div class="flex items-center gap-2">
+                  <div class="flex gap-2 items-center">
                     Enregistré à
                     <Icon
                       v-if="getSortConfig(section.name).field === 'registeredAt'"
@@ -120,20 +128,23 @@
                 <TableCell class="font-medium">{{ person.firstName }}</TableCell>
                 <TableCell class="font-medium">{{ person.lastName }}</TableCell>
                 <TableCell>
-                  <span v-if="person.hasServiceBooklet" class="inline-flex items-center text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
+                  <span
+                    v-if="person.hasServiceBooklet"
+                    class="bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 inline-flex items-center px-2 py-1 rounded-full text-blue-700 text-xs"
+                  >
                     <Icon name="lucide:book-open" size="12" class="mr-1" />
                     Oui
                   </span>
-                  <span v-else class="text-xs text-muted-foreground">Non</span>
+                  <span v-else class="text-muted-foreground text-xs">Non</span>
                 </TableCell>
-                <TableCell class="text-sm text-muted-foreground">
+                <TableCell class="text-muted-foreground text-sm">
                   {{ formatDateTime(person.registeredAt) }}
                 </TableCell>
                 <TableCell class="text-right">
                   <Button
                     variant="ghost"
                     size="sm"
-                    class="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    class="hover:bg-destructive/10 hover:text-destructive text-destructive"
                     @click="confirmRemovePerson(person)"
                   >
                     <Icon name="lucide:trash-2" size="14" />
@@ -143,9 +154,9 @@
             </TableBody>
           </Table>
         </CardContent>
-        
-        <CardContent v-else class="text-center py-8">
-          <Icon name="lucide:user-x" size="32" class="mx-auto text-muted-foreground mb-2" />
+
+        <CardContent v-else class="py-8 text-center">
+          <Icon name="lucide:user-x" size="32" class="mb-2 mx-auto text-muted-foreground" />
           <p class="text-muted-foreground">Aucune personne dans cette section</p>
         </CardContent>
       </Card>
@@ -157,11 +168,11 @@
         <DialogHeader>
           <DialogTitle>Confirmer la suppression</DialogTitle>
           <DialogDescription>
-            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.firstName }} {{ personToRemove?.lastName }}
-            de la section {{ personToRemove?.section }} ?
+            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.firstName }} {{ personToRemove?.lastName }} de la
+            section {{ personToRemove?.section }} ?
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter class="flex justify-end gap-2">
+        <DialogFooter class="flex gap-2 justify-end">
           <Button variant="outline" @click="cancelRemove">Annuler</Button>
           <Button variant="destructive" @click="confirmRemove">Supprimer</Button>
         </DialogFooter>
@@ -174,6 +185,21 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Link } from '@/ui/link'
 
+interface Person {
+  id: string
+  firstName: string
+  lastName: string
+  section: string
+  registeredAt: Date
+  hasServiceBooklet: boolean
+}
+
+useSeoMeta({
+  description:
+    'Découvrez Swiss Army Presence Controller, une solution open source et gratuite pour la gestion des présences militaires. Sécurisé, local et transparent.',
+  title: 'Présences - Presence Controller'
+})
+
 const { getPeopleBySection, people, removePerson, sections } = usePresenceController()
 
 const totalPeople = computed(() => people.value.length)
@@ -182,13 +208,17 @@ const totalPeople = computed(() => people.value.length)
 const sortConfigs = ref<Record<string, { field: string; order: 'asc' | 'desc' }>>({})
 
 // Initialiser la configuration de tri par défaut pour chaque section
-watch(sections, (newSections) => {
-  newSections.forEach(section => {
-    if (!sortConfigs.value[section.name]) {
-      sortConfigs.value[section.name] = { field: 'lastName', order: 'asc' }
-    }
-  })
-}, { immediate: true })
+watch(
+  sections,
+  (newSections) => {
+    newSections.forEach((section) => {
+      if (!sortConfigs.value[section.name]) {
+        sortConfigs.value[section.name] = { field: 'lastName', order: 'asc' }
+      }
+    })
+  },
+  { immediate: true }
+)
 
 // Obtenir la configuration de tri pour une section
 const getSortConfig = (sectionName: string) => {
@@ -214,19 +244,19 @@ const getSortedPeopleBySection = (sectionName: string) => {
   const config = getSortConfig(sectionName)
 
   return [...sectionPeople].sort((a, b) => {
-    let aValue = a[config.field]
-    let bValue = b[config.field]
+    let aValue: string | number | boolean | Date = a[config.field as keyof typeof a]
+    let bValue: string | number | boolean | Date = b[config.field as keyof typeof b]
 
     // Traitement spécial pour les dates
     if (config.field === 'registeredAt') {
-      aValue = new Date(aValue).getTime()
-      bValue = new Date(bValue).getTime()
+      aValue = new Date(aValue as Date).getTime()
+      bValue = new Date(bValue as Date).getTime()
     }
 
     // Traitement spécial pour les booléens
     if (config.field === 'hasServiceBooklet') {
-      aValue = aValue ? 1 : 0
-      bValue = bValue ? 1 : 0
+      aValue = (aValue as boolean) ? 1 : 0
+      bValue = (bValue as boolean) ? 1 : 0
     }
 
     // Traitement spécial pour les chaînes de caractères
@@ -244,9 +274,9 @@ const getSortedPeopleBySection = (sectionName: string) => {
 }
 
 // Gestion de la suppression
-const personToRemove = ref<any>(null)
+const personToRemove = ref<Person | null>(null)
 
-const confirmRemovePerson = (person: any) => {
+const confirmRemovePerson = (person: Person) => {
   personToRemove.value = person
 }
 

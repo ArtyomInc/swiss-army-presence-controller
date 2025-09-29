@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <div class="mx-auto pt-5 max-w-screen-xl px-5 md:px-10">
+    <div class="max-w-screen-xl md:px-10 mx-auto pt-5 px-5">
       <slot />
     </div>
     <Footer />

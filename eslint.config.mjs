@@ -1,53 +1,48 @@
-// ts-check
-import perfectionistPlugin from 'eslint-plugin-perfectionist'
-import pluginVue from 'eslint-plugin-vue'
-import withNuxt from './.nuxt/eslint.config.mjs'
+import stylistic from '@stylistic/eslint-plugin'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import perfectionist from 'eslint-plugin-perfectionist'
+
+import { withNuxt } from './.nuxt/eslint.config.mjs'
 
 export default withNuxt(
+  stylistic.configs.customize({
+    commaDangle: 'never',
+    indent: 2,
+    quotes: 'single',
+    semi: false
+  }),
   {
-    ignores: ['node_modules/**/*', 'dist/**/*']
-  },
-  ...pluginVue.configs['flat/essential'],
-  {
-    files: ['**/*{.ts,.mts,.tsx,.vue,.js,.jsx}'],
+    ignores: ['.output/**'],
     plugins: {
-      perfectionist: perfectionistPlugin
+      perfectionist
     },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true }],
+      'perfectionist/sort-exports': 'error',
       'perfectionist/sort-imports': [
         'error',
         {
-          groups: [
-            'type',
-            ['builtin', 'external'],
-            'internal-type',
-            'internal',
-            ['parent-type', 'sibling-type', 'index-type'],
-            ['parent', 'sibling', 'index'],
-            'object',
-            'unknown'
-          ]
+          type: 'alphabetical'
         }
       ],
       'perfectionist/sort-objects': 'error',
-      'vue/html-self-closing': [
-        'error',
-        {
-          html: {
-            component: 'always',
-            normal: 'always',
-            void: 'always'
-          },
-          math: 'always',
-          svg: 'always'
-        }
-      ],
-      'vue/valid-v-for': 'off',
-      'vue/multi-word-component-names': 'off',
+      'perfectionist/sort-variable-declarations': 'error'
+    }
+  },
+  {
+    files: ['ui/**/*.vue'],
+    rules: {
       'vue/require-default-prop': 'off'
     }
-  }
+  },
+  {
+    files: ['**/*.ts', '**/*.vue'],
+    rules: {
+      semi: ['error', 'never'],
+      'vue/multi-word-component-names': 'off',
+      'vue/no-unused-vars': 'warn',
+      'vue/no-v-html': 'off',
+      'vue/static-class-names-order': 'error'
+    }
+  },
+  eslintConfigPrettier
 )

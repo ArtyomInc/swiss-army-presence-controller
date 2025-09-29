@@ -1,40 +1,42 @@
 <template>
-  <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-    <div class="container mx-auto px-4 h-16 flex items-center justify-between max-w-screen-xl">
+  <header
+    class="backdrop-blur bg-background/95 border-b sticky supports-[backdrop-filter]:bg-background/60 top-0 w-full z-50"
+  >
+    <div class="container flex h-16 items-center justify-between max-w-screen-xl mx-auto px-4">
       <!-- Logo & Brand -->
-      <NuxtLink to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <NuxtImg class="w-6 h-6" src="/logo.svg" alt="Swiss Army Presence Controller" />
+      <NuxtLink to="/" class="flex gap-3 hover:opacity-80 items-center transition-opacity">
+        <div class="bg-primary flex h-8 items-center justify-center rounded-lg w-8">
+          <NuxtImg class="h-6 w-6" src="/logo.svg" alt="Swiss Army Presence Controller" />
         </div>
         <div class="hidden sm:block">
-          <span class="text-lg font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+          <span
+            class="bg-clip-text bg-gradient-to-r font-bold from-foreground text-lg text-transparent to-foreground/80"
+          >
             Swiss Army
           </span>
-          <div class="text-sm text-muted-foreground font-medium -mt-1">
-            Presence Controller
-          </div>
+          <div class="-mt-1 font-medium text-muted-foreground text-sm">Presence Controller</div>
         </div>
       </NuxtLink>
 
       <!-- Navigation -->
-      <nav class="hidden md:flex items-center gap-1">
+      <nav class="gap-1 hidden items-center md:flex">
         <NuxtLink
           to="/"
-          class="px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent hover:text-accent-foreground"
+          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
         >
           Accueil
         </NuxtLink>
         <NuxtLink
           to="/controller"
-          class="px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent hover:text-accent-foreground"
+          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
         >
           Application
         </NuxtLink>
         <NuxtLink
           to="/about"
-          class="px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent hover:text-accent-foreground"
+          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
         >
           À propos
@@ -42,7 +44,7 @@
       </nav>
 
       <!-- CTA Button -->
-      <div class="flex items-center gap-3">
+      <div class="flex gap-3 items-center">
         <NuxtLink to="/controller" class="hidden sm:block">
           <Button size="sm" class="bg-primary hover:bg-primary/90">
             <Icon name="lucide:play-circle" size="16" class="mr-2" />
@@ -51,23 +53,18 @@
         </NuxtLink>
 
         <!-- Mobile Menu Button -->
-        <Button
-          variant="ghost"
-          size="sm"
-          class="md:hidden"
-          @click="toggleMobileMenu"
-        >
+        <Button variant="ghost" size="sm" class="md:hidden" @click="toggleMobileMenu">
           <Icon name="lucide:menu" size="20" />
         </Button>
       </div>
     </div>
 
     <!-- Mobile Navigation -->
-    <div v-show="mobileMenuOpen" class="md:hidden border-t bg-background">
-      <nav class="container mx-auto px-4 py-4 space-y-2 max-w-screen-xl">
+    <div v-show="mobileMenuOpen" class="bg-background border-t md:hidden">
+      <nav class="container max-w-screen-xl mx-auto px-4 py-4 space-y-2">
         <NuxtLink
           to="/"
-          class="block px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent"
+          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
           @click="mobileMenuOpen = false"
         >
@@ -75,7 +72,7 @@
         </NuxtLink>
         <NuxtLink
           to="/controller"
-          class="block px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent"
+          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
           @click="mobileMenuOpen = false"
         >
@@ -83,15 +80,15 @@
         </NuxtLink>
         <NuxtLink
           to="/about"
-          class="block px-3 py-2 text-sm font-medium rounded-md transition-all hover:bg-accent"
+          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
           @click="mobileMenuOpen = false"
         >
           À propos
         </NuxtLink>
-        <div class="pt-2 border-t">
+        <div class="border-t pt-2">
           <NuxtLink to="/controller" @click="mobileMenuOpen = false">
-            <Button size="sm" class="w-full bg-primary hover:bg-primary/90">
+            <Button size="sm" class="bg-primary hover:bg-primary/90 w-full">
               <Icon name="lucide:play-circle" size="16" class="mr-2" />
               Commencer l'application
             </Button>
@@ -111,7 +108,10 @@ const toggleMobileMenu = () => {
 }
 
 // Close mobile menu when route changes
-watch(() => useRoute().path, () => {
-  mobileMenuOpen.value = false
-})
+watch(
+  () => useRoute().path,
+  () => {
+    mobileMenuOpen.value = false
+  }
+)
 </script>

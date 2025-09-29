@@ -6,27 +6,17 @@
         <CardDescription>Ajoutez une personne à une section pour enregistrer sa présence</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
           <div>
             <Label for="firstname">Prénom :</Label>
-            <Input 
-              id="firstname" 
-              v-model="userForm.firstName" 
-              placeholder="Jean" 
-              @keyup.enter="handleSubmit"
-            />
+            <Input id="firstname" v-model="userForm.firstName" placeholder="Jean" @keyup.enter="handleSubmit" />
           </div>
           <div>
             <Label for="lastname">Nom :</Label>
-            <Input 
-              id="lastname" 
-              v-model="userForm.lastName" 
-              placeholder="Du Jardin"
-              @keyup.enter="handleSubmit" 
-            />
+            <Input id="lastname" v-model="userForm.lastName" placeholder="Du Jardin" @keyup.enter="handleSubmit" />
           </div>
         </div>
-        
+
         <div>
           <Label for="section">Section :</Label>
           <Select v-model="userForm.section">
@@ -44,29 +34,20 @@
         </div>
 
         <div class="flex items-center space-x-2">
-          <Checkbox
-            id="hasServiceBooklet"
-            v-model="userForm.hasServiceBooklet"
-          />
+          <Checkbox id="hasServiceBooklet" v-model="userForm.hasServiceBooklet" />
           <Label for="hasServiceBooklet">Livret de service</Label>
         </div>
-        <div v-if="sectionNames.length === 0" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-          <p class="text-sm text-yellow-800 dark:text-yellow-200">
+        <div v-if="sectionNames.length === 0" class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+          <p class="dark:text-yellow-200 text-sm text-yellow-800">
             <Icon name="lucide:alert-triangle" size="16" class="inline mr-1" />
-            Aucune section configurée. 
-            <Link href="/controller" class="underline font-medium">Retourner à la configuration</Link>
+            Aucune section configurée.
+            <Link href="/controller" class="font-medium underline">Retourner à la configuration</Link>
           </p>
         </div>
       </CardContent>
       <CardFooter class="flex justify-between">
-        <Link href="/controller" variant="outline">
-          <Icon name="lucide:arrow-left" size="20" /> Retour
-        </Link>
-        <Button
-          :disabled="!canSubmit"
-          class="min-w-[120px]"
-          @click="handleSubmit"
-        >
+        <Link href="/controller" variant="outline"> <Icon name="lucide:arrow-left" size="20" /> Retour </Link>
+        <Button :disabled="!canSubmit" class="min-w-[120px]" @click="handleSubmit">
           <template v-if="isSubmitting">
             <Icon name="lucide:loader-2" size="16" class="animate-spin mr-2" />
             Ajout...
@@ -90,21 +71,24 @@
           <div
             v-for="person in recentPeople"
             :key="person.id"
-            class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
+            class="bg-green-50 dark:bg-green-900/20 flex items-center justify-between p-3 rounded-lg"
           >
             <div class="flex items-center space-x-3">
-              <Icon name="lucide:user-check" size="16" class="text-green-600 dark:text-green-400" />
+              <Icon name="lucide:user-check" size="16" class="dark:text-green-400 text-green-600" />
               <div class="flex-1">
                 <p class="font-medium">{{ person.firstName }} {{ person.lastName }}</p>
-                <div class="flex items-center gap-2">
-                  <p class="text-sm text-muted-foreground">{{ person.section }}</p>
-                  <span v-if="person.hasServiceBooklet" class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
+                <div class="flex gap-2 items-center">
+                  <p class="text-muted-foreground text-sm">{{ person.section }}</p>
+                  <span
+                    v-if="person.hasServiceBooklet"
+                    class="bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-1 rounded-full text-blue-700 text-xs"
+                  >
                     📖 Livret
                   </span>
                 </div>
               </div>
             </div>
-            <div class="text-sm text-muted-foreground">
+            <div class="text-muted-foreground text-sm">
               {{ formatTime(person.registeredAt) }}
             </div>
           </div>
@@ -112,7 +96,7 @@
       </CardContent>
       <CardFooter>
         <Link href="/controller/presences" class="w-full">
-            Voir toutes les présences <Icon name="lucide:users" size="20" />
+          Voir toutes les présences <Icon name="lucide:users" size="20" />
         </Link>
       </CardFooter>
     </Card>
@@ -122,6 +106,12 @@
 <script setup lang="ts">
 import { Checkbox } from '@/ui/checkbox'
 import { Link } from '@/ui/link'
+
+useSeoMeta({
+  description:
+    'Découvrez Swiss Army Presence Controller, une solution open source et gratuite pour la gestion des présences militaires. Sécurisé, local et transparent.',
+  title: 'Enregistrement - Presence Controller'
+})
 
 const { addPerson, people, sectionNames } = usePresenceController()
 
@@ -137,11 +127,13 @@ const userForm = reactive<{
 const isSubmitting = ref(false)
 
 const canSubmit = computed(() => {
-  return userForm.firstName?.trim() && 
-         userForm.lastName?.trim() && 
-         userForm.section && 
-         sectionNames.value.length > 0 &&
-         !isSubmitting.value
+  return (
+    userForm.firstName?.trim() &&
+    userForm.lastName?.trim() &&
+    userForm.section &&
+    sectionNames.value.length > 0 &&
+    !isSubmitting.value
+  )
 })
 
 // Personnes récemment ajoutées (5 dernières)
@@ -153,20 +145,20 @@ const recentPeople = computed(() => {
 
 const handleSubmit = async () => {
   if (!canSubmit.value) return
-  
+
   isSubmitting.value = true
-  
+
   try {
     // Simuler un petit délai pour l'UX
-    await new Promise(resolve => setTimeout(resolve, 300))
-    
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
     const person = addPerson(
       userForm.firstName!,
       userForm.lastName!,
       userForm.section!,
       userForm.hasServiceBooklet || false
     )
-    
+
     if (person) {
       // Reset du formulaire
       userForm.firstName = ''

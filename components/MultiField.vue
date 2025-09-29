@@ -1,14 +1,14 @@
 <template>
   <div class="flex flex-col gap-1">
-    <div v-if="model && model.length != 0" class="flex gap-1 rounded-[var(--radius)] p-1 border border-border">
-      <div v-for="(item, index) in model" :key="item" class="flex rounded-[var(--radius)] border items-center gap-1.5">
+    <div v-if="model && model.length != 0" class="border border-border flex gap-1 p-1 rounded-[var(--radius)]">
+      <div v-for="(item, index) in model" :key="item" class="border flex gap-1.5 items-center rounded-[var(--radius)]">
         <p class="pl-2 text-sm">{{ item }}</p>
-        <Button class="w-7 h-7" variant="destructive" size="icon" @click="remove(index)">
+        <Button class="h-7 w-7" variant="destructive" size="icon" @click="remove(index)">
           <Icon name="lucide:trash-2" size="18" />
         </Button>
       </div>
     </div>
-    <div class="flex items-center gap-1.5">
+    <div class="flex gap-1.5 items-center">
       <Input
         :id="props.id"
         v-model="userInput"

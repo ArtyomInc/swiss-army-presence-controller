@@ -15,7 +15,7 @@ interface Section {
 export const usePresenceController = () => {
   // Gestion des sections
   const sections = ref<Section[]>([])
-  const sectionNames = computed(() => sections.value.map(s => s.name))
+  const sectionNames = computed(() => sections.value.map((s) => s.name))
 
   // Gestion des personnes
   const people = ref<Person[]>([])
@@ -25,9 +25,9 @@ export const usePresenceController = () => {
     if (import.meta.client) {
       const storedSections = localStorage.getItem('presence-sections')
       const storedPeople = localStorage.getItem('presence-people')
-      
+
       if (storedSections) {
-        sections.value = JSON.parse(storedSections).map((s: { createdAt: string, name: string }) => ({
+        sections.value = JSON.parse(storedSections).map((s: { createdAt: string; name: string }) => ({
           ...s,
           createdAt: new Date(s.createdAt)
         }))
@@ -35,11 +35,20 @@ export const usePresenceController = () => {
       // Pas de sections par défaut - commence vide
 
       if (storedPeople) {
-        people.value = JSON.parse(storedPeople).map((p: { registeredAt: string, firstName: string, id: string, lastName: string, section: string, hasServiceBooklet?: boolean }) => ({
-          ...p,
-          hasServiceBooklet: p.hasServiceBooklet ?? false, // Par défaut false pour la rétrocompatibilité
-          registeredAt: new Date(p.registeredAt)
-        }))
+        people.value = JSON.parse(storedPeople).map(
+          (p: {
+            registeredAt: string
+            firstName: string
+            id: string
+            lastName: string
+            section: string
+            hasServiceBooklet?: boolean
+          }) => ({
+            ...p,
+            hasServiceBooklet: p.hasServiceBooklet ?? false, // Par défaut false pour la rétrocompatibilité
+            registeredAt: new Date(p.registeredAt)
+          })
+        )
       }
     }
   }
@@ -59,7 +68,7 @@ export const usePresenceController = () => {
 
   // Actions pour les sections
   const addSection = (name: string) => {
-    if (name.trim() && !sections.value.find(s => s.name === name.trim())) {
+    if (name.trim() && !sections.value.find((s) => s.name === name.trim())) {
       sections.value.push({
         createdAt: new Date(),
         name: name.trim()
@@ -69,7 +78,7 @@ export const usePresenceController = () => {
   }
 
   const removeSection = (name: string) => {
-    const index = sections.value.findIndex(s => s.name === name)
+    const index = sections.value.findIndex((s) => s.name === name)
     if (index > -1) {
       sections.value.splice(index, 1)
       saveSections()
@@ -78,8 +87,8 @@ export const usePresenceController = () => {
 
   const setSections = (newSections: string[]) => {
     // Filtrer les sections vides
-    const validSections = newSections.filter(name => name.trim())
-    sections.value = validSections.map(name => ({
+    const validSections = newSections.filter((name) => name.trim())
+    sections.value = validSections.map((name) => ({
       createdAt: new Date(),
       name: name.trim()
     }))
@@ -105,7 +114,7 @@ export const usePresenceController = () => {
   }
 
   const removePerson = (id: string) => {
-    const index = people.value.findIndex(p => p.id === id)
+    const index = people.value.findIndex((p) => p.id === id)
     if (index > -1) {
       people.value.splice(index, 1)
       savePeople()
@@ -129,12 +138,12 @@ export const usePresenceController = () => {
 
   // Utilitaires
   const getPeopleBySection = (sectionName: string) => {
-    return people.value.filter(p => p.section === sectionName)
+    return people.value.filter((p) => p.section === sectionName)
   }
 
   const getPresenceStats = () => {
     const stats: Record<string, number> = {}
-    sections.value.forEach(section => {
+    sections.value.forEach((section) => {
       stats[section.name] = getPeopleBySection(section.name).length
     })
     return stats

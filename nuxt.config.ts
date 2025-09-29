@@ -1,7 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
   app: {
     head: {
       bodyAttrs: { class: 'text-foreground' },
@@ -25,6 +23,8 @@ export default defineNuxtConfig({
     storage: 'localStorage',
     storageKey: 'color-mode'
   },
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
