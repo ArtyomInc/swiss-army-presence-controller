@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       script: [
         {
-          'data-website-id': 'replace_me',
+          'data-website-id': '6c68f778-6d7a-4142-b0b9-607e34cbccc4',
           defer: true,
           src: 'https://umami.arduc.ch/script.js'
         }
