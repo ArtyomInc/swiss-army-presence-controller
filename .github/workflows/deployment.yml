@@ -10,29 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install bun
-        uses: oven-sh/setup-bun@v1.2.2
+        uses: oven-sh/setup-bun@v2.0.2
         with:
           bun-version: latest
 
       - name: Install dependencies and build
         run: |
           bun install
-          bun generate
+          bun run build
+          ls .output/*
 
-      # - name: Fix permissions
-      #   run: |
-      #     sudo chmod -R 755 .output
+      - name: Fix permissions
+        run: |
+          sudo chmod -R 755 .output
 
-      # - name: Deploy to server
-      #   uses: appleboy/scp-action@v0.1.7
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USERNAME }}
-      #     key: ${{ secrets.SERVER_SSH_KEY }}
-      #     source: ".output/public/*"
-      #     rm: true
-      #     target: /var/www/html/swiss-army-presence-controller.arduc.ch
-      #     strip_components: 2
+      - name: Deploy to server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: '.output/*'
+          rm: true
+          target: /var/www/html/swiss-army-presence-controller.arduc.ch
+          strip_components: 1
+
+      - name: Restart PM2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            pm2 restart swiss-army-presence-controller
