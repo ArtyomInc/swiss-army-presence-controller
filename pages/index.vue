@@ -16,8 +16,8 @@
             Swiss Army Presence Controller
           </h1>
           <p class="max-w-3xl mb-8 md:text-2xl mx-auto text-muted-foreground text-xl">
-            Gérez facilement les présences de vos groupes et sections militaires lors des rentrées en service. Gratuit,
-            open source et conçu pour simplifier vos opérations.
+            Gérez facilement les présences de vos groupes et sections militaires lors des rentrées en service. Gratuit
+            et open source.
           </p>
           <div class="flex flex-col gap-4 justify-center sm:flex-row">
             <Link href="/controller">
@@ -39,7 +39,7 @@
         <div class="mb-16 text-center">
           <h2 class="font-bold mb-4 md:text-4xl text-3xl">Fonctionnalités principales</h2>
           <p class="max-w-2xl mx-auto text-muted-foreground text-xl">
-            Tout ce dont vous avez besoin pour gérer efficacement les présences de vos équipes.
+            Tout ce dont vous avez besoin pour gérer efficacement les présences de vos groupes ou sections.
           </p>
         </div>
 
@@ -108,7 +108,7 @@
                 <h3 class="font-bold md:text-3xl text-2xl">Vue d'ensemble claire</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Visualisez toutes les présences par section avec tri et statistiques détaillées. Interface claire et
+                Visualisez toutes les présences par section avec tri et statistiques. Interface claire et
                 professionnelle pour une gestion optimale.
               </p>
               <div class="space-y-2">
