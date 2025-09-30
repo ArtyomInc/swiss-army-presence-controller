@@ -1,6 +1,5 @@
 <template>
   <div class="min-h-screen">
-    <!-- Hero Section -->
     <section class="px-4 py-20 text-center">
       <div class="max-w-6xl mx-auto">
         <div class="mb-8">
@@ -33,7 +32,6 @@
       </div>
     </section>
 
-    <!-- Features Section -->
     <section class="px-4 py-20">
       <div class="max-w-6xl mx-auto">
         <div class="mb-16 text-center">
@@ -44,7 +42,6 @@
         </div>
 
         <div class="space-y-16">
-          <!-- Feature 1 -->
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
               <div class="flex gap-3 items-center mb-4">
@@ -69,7 +66,6 @@
             </div>
           </div>
 
-          <!-- Feature 2 -->
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div>
               <NuxtImg
@@ -100,7 +96,6 @@
             </div>
           </div>
 
-          <!-- Feature 3 -->
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
               <div class="flex gap-3 items-center mb-4">
@@ -141,7 +136,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@/ui/link'
+import { Link } from '@/ui/link';
 
 useSeoMeta({
   description:

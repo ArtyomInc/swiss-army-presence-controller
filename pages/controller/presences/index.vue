@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col gap-6">
-    <!-- Header avec statistiques -->
     <Card>
       <CardHeader>
         <div class="flex items-center justify-between">
@@ -27,7 +26,6 @@
       </CardHeader>
     </Card>
 
-    <!-- État vide -->
     <Card v-if="totalPeople === 0">
       <CardContent class="py-12 text-center">
         <Icon name="lucide:users" size="48" class="mb-4 mx-auto text-muted-foreground" />
@@ -40,7 +38,6 @@
       </CardContent>
     </Card>
 
-    <!-- Vue par section -->
     <div v-else class="gap-6 grid">
       <Card v-for="section in sections" :key="section.name">
         <CardHeader>
@@ -162,7 +159,6 @@
       </Card>
     </div>
 
-    <!-- Dialog de confirmation pour la suppression -->
     <Dialog :open="!!personToRemove" @update:open="(open) => !open && cancelRemove()">
       <DialogContent class="sm:max-w-md">
         <DialogHeader>
@@ -185,6 +181,8 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Link } from '@/ui/link'
 
+import { usePresenceController } from '~/composables/usePresenceController'
+
 interface Person {
   id: string
   firstName: string
@@ -204,10 +202,8 @@ const { getPeopleBySection, people, removePerson, sections } = usePresenceContro
 
 const totalPeople = computed(() => people.value.length)
 
-// Configuration de tri par section
 const sortConfigs = ref<Record<string, { field: string; order: 'asc' | 'desc' }>>({})
 
-// Initialiser la configuration de tri par défaut pour chaque section
 watch(
   sections,
   (newSections) => {
@@ -220,12 +216,10 @@ watch(
   { immediate: true }
 )
 
-// Obtenir la configuration de tri pour une section
 const getSortConfig = (sectionName: string) => {
   return sortConfigs.value[sectionName] || { field: 'lastName', order: 'asc' }
 }
 
-// Basculer le tri
 const toggleSort = (field: string, sectionName: string) => {
   const currentConfig = getSortConfig(sectionName)
   if (currentConfig.field === field) {
@@ -238,7 +232,6 @@ const toggleSort = (field: string, sectionName: string) => {
   }
 }
 
-// Obtenir les personnes triées pour une section
 const getSortedPeopleBySection = (sectionName: string) => {
   const sectionPeople = getPeopleBySection(sectionName)
   const config = getSortConfig(sectionName)
@@ -247,19 +240,16 @@ const getSortedPeopleBySection = (sectionName: string) => {
     let aValue: string | number | boolean | Date = a[config.field as keyof typeof a]
     let bValue: string | number | boolean | Date = b[config.field as keyof typeof b]
 
-    // Traitement spécial pour les dates
     if (config.field === 'registeredAt') {
       aValue = new Date(aValue as Date).getTime()
       bValue = new Date(bValue as Date).getTime()
     }
 
-    // Traitement spécial pour les booléens
     if (config.field === 'hasServiceBooklet') {
       aValue = (aValue as boolean) ? 1 : 0
       bValue = (bValue as boolean) ? 1 : 0
     }
 
-    // Traitement spécial pour les chaînes de caractères
     if (typeof aValue === 'string' && typeof bValue === 'string') {
       aValue = aValue.toLowerCase()
       bValue = bValue.toLowerCase()
@@ -273,7 +263,6 @@ const getSortedPeopleBySection = (sectionName: string) => {
   })
 }
 
-// Gestion de la suppression
 const personToRemove = ref<Person | null>(null)
 
 const confirmRemovePerson = (person: Person) => {
@@ -291,7 +280,6 @@ const confirmRemove = () => {
   }
 }
 
-// Formatage des dates
 const formatDateTime = (date: Date) => {
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
@@ -302,7 +290,6 @@ const formatDateTime = (date: Date) => {
   }).format(date)
 }
 
-// Navigation si aucune section
 watchEffect(() => {
   if (import.meta.client && sections.value.length === 0) {
     setTimeout(() => {

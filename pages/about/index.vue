@@ -1,6 +1,5 @@
 <template>
   <div class="container max-w-4xl mx-auto px-4 py-8">
-    <!-- Mission Section -->
     <section class="mb-12">
       <h2 class="font-bold mb-4 text-2xl">L'objectif</h2>
       <div class="max-w-none prose prose-muted">
@@ -13,7 +12,6 @@
       </div>
     </section>
 
-    <!-- Privacy & Security Section -->
     <section class="mb-12">
       <h2 class="font-bold mb-4 text-2xl">Confidentialité et sécurité</h2>
       <div class="max-w-none mb-6 prose prose-muted">
@@ -44,7 +42,6 @@
       </div>
     </section>
 
-    <!-- Open Source Section -->
     <section class="mb-12">
       <h2 class="font-bold mb-4 text-2xl">Open Source</h2>
       <div class="max-w-none mb-6 prose prose-muted">
@@ -66,7 +63,6 @@
       </div>
     </section>
 
-    <!-- Technical Stack Section -->
     <section class="mb-12">
       <h2 class="font-bold mb-4 text-2xl">Technologies utilisées</h2>
       <div class="max-w-none mb-6 prose prose-muted">

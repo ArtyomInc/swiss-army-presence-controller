@@ -18,7 +18,6 @@
       </CardFooter>
     </Card>
 
-    <!-- Aperçu des présences si des personnes sont enregistrées -->
     <Card v-if="totalPeople > 0">
       <CardHeader>
         <CardTitle>Aperçu des Présences</CardTitle>
@@ -128,7 +127,9 @@ import {
   DialogTrigger
 } from '@/ui/dialog'
 import { Link } from '@/ui/link'
+
 import MultiField from '~/components/MultiField.vue'
+import { usePresenceController } from '~/composables/usePresenceController'
 
 useSeoMeta({
   description:
@@ -138,13 +139,10 @@ useSeoMeta({
 
 const { clearPeople, clearSections, getPeopleBySection, people, sectionNames, setSections } = usePresenceController()
 
-// Model local pour MultiField
 const sectionsModel = ref<string[]>([])
 
-// Nombre total de personnes
 const totalPeople = computed(() => people.value.length)
 
-// Fonctions de confirmation
 const handleClearSections = () => {
   clearSections()
 }
@@ -153,12 +151,10 @@ const handleClearPeople = () => {
   clearPeople()
 }
 
-// Synchronisation unidirectionnelle : store -> modèle local
 onMounted(() => {
   sectionsModel.value = [...sectionNames.value]
 })
 
-// Synchronisation modèle local -> store quand ça change
 watch(
   sectionsModel,
   (newSections) => {
@@ -167,11 +163,9 @@ watch(
   { deep: true }
 )
 
-// Écouter les changements du store pour mettre à jour le modèle local
 watch(
   sectionNames,
   (newSections) => {
-    // Ne mettre à jour que si c'est différent pour éviter les boucles
     if (JSON.stringify(sectionsModel.value) !== JSON.stringify(newSections)) {
       sectionsModel.value = [...newSections]
     }

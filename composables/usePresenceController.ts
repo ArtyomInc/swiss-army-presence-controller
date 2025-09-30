@@ -13,14 +13,11 @@ interface Section {
 }
 
 export const usePresenceController = () => {
-  // Gestion des sections
   const sections = ref<Section[]>([])
   const sectionNames = computed(() => sections.value.map((s) => s.name))
 
-  // Gestion des personnes
   const people = ref<Person[]>([])
 
-  // Initialiser depuis localStorage
   const initializeData = () => {
     if (import.meta.client) {
       const storedSections = localStorage.getItem('presence-sections')
@@ -32,7 +29,6 @@ export const usePresenceController = () => {
           createdAt: new Date(s.createdAt)
         }))
       }
-      // Pas de sections par défaut - commence vide
 
       if (storedPeople) {
         people.value = JSON.parse(storedPeople).map(
@@ -45,7 +41,7 @@ export const usePresenceController = () => {
             hasServiceBooklet?: boolean
           }) => ({
             ...p,
-            hasServiceBooklet: p.hasServiceBooklet ?? false, // Par défaut false pour la rétrocompatibilité
+            hasServiceBooklet: p.hasServiceBooklet ?? false,
             registeredAt: new Date(p.registeredAt)
           })
         )
@@ -53,7 +49,6 @@ export const usePresenceController = () => {
     }
   }
 
-  // Sauvegarder dans localStorage
   const saveSections = () => {
     if (import.meta.client) {
       localStorage.setItem('presence-sections', JSON.stringify(sections.value))
@@ -66,7 +61,6 @@ export const usePresenceController = () => {
     }
   }
 
-  // Actions pour les sections
   const addSection = (name: string) => {
     if (name.trim() && !sections.value.find((s) => s.name === name.trim())) {
       sections.value.push({
@@ -86,7 +80,6 @@ export const usePresenceController = () => {
   }
 
   const setSections = (newSections: string[]) => {
-    // Filtrer les sections vides
     const validSections = newSections.filter((name) => name.trim())
     sections.value = validSections.map((name) => ({
       createdAt: new Date(),
@@ -95,7 +88,6 @@ export const usePresenceController = () => {
     saveSections()
   }
 
-  // Actions pour les personnes
   const addPerson = (firstName: string, lastName: string, section: string, hasServiceBooklet = false) => {
     if (firstName.trim() && lastName.trim() && section) {
       const person: Person = {
@@ -121,7 +113,6 @@ export const usePresenceController = () => {
     }
   }
 
-  // Actions de suppression complète
   const clearSections = () => {
     sections.value = []
     if (import.meta.client) {
@@ -136,7 +127,6 @@ export const usePresenceController = () => {
     }
   }
 
-  // Utilitaires
   const getPeopleBySection = (sectionName: string) => {
     return people.value.filter((p) => p.section === sectionName)
   }
@@ -149,20 +139,15 @@ export const usePresenceController = () => {
     return stats
   }
 
-  // Initialiser au chargement
   onMounted(() => {
     initializeData()
   })
 
   return {
-    // Actions personnes
     addPerson,
-    // Actions sections
     addSection,
-    // Actions de suppression complète
     clearPeople,
     clearSections,
-    // Utilitaires
     getPeopleBySection,
 
     getPresenceStats,
@@ -173,7 +158,6 @@ export const usePresenceController = () => {
     removeSection,
 
     sectionNames,
-    // État
     sections: readonly(sections),
     setSections
   }

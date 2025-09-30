@@ -60,7 +60,6 @@
       </CardFooter>
     </Card>
 
-    <!-- Liste des personnes récemment ajoutées -->
     <Card v-if="recentPeople.length > 0">
       <CardHeader>
         <CardTitle>Personnes Récemment Ajoutées</CardTitle>
@@ -107,6 +106,8 @@
 import { Checkbox } from '@/ui/checkbox'
 import { Link } from '@/ui/link'
 
+import { usePresenceController } from '~/composables/usePresenceController'
+
 useSeoMeta({
   description:
     'Découvrez Swiss Army Presence Controller, une solution open source et gratuite pour la gestion des présences militaires. Sécurisé, local et transparent.',
@@ -136,7 +137,6 @@ const canSubmit = computed(() => {
   )
 })
 
-// Personnes récemment ajoutées (5 dernières)
 const recentPeople = computed(() => {
   return [...people.value]
     .sort((a, b) => new Date(b.registeredAt).getTime() - new Date(a.registeredAt).getTime())
@@ -149,7 +149,6 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Simuler un petit délai pour l'UX
     await new Promise((resolve) => setTimeout(resolve, 300))
 
     const person = addPerson(
@@ -160,11 +159,9 @@ const handleSubmit = async () => {
     )
 
     if (person) {
-      // Reset du formulaire
       userForm.firstName = ''
       userForm.lastName = ''
       userForm.hasServiceBooklet = false
-      // Garder la section sélectionnée pour faciliter l'ajout multiple
     }
   } finally {
     isSubmitting.value = false
@@ -179,10 +176,8 @@ const formatTime = (date: Date) => {
   }).format(date)
 }
 
-// Rediriger si aucune section n'est configurée
 watchEffect(() => {
   if (import.meta.client && sectionNames.value.length === 0) {
-    // Attendre un peu pour éviter la redirection immédiate
     setTimeout(() => {
       if (sectionNames.value.length === 0) {
         navigateTo('/controller')
