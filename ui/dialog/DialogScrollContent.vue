@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { DialogContentEmits, DialogContentProps } from 'radix-vue'
+import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
 import { reactiveOmit } from '@vueuse/core'
-import { DialogClose, DialogContent, DialogOverlay, DialogPortal, useForwardPropsEmits } from 'radix-vue'
+import { X } from 'lucide-vue-next'
+import { DialogClose, DialogContent, DialogOverlay, DialogPortal, useForwardPropsEmits } from 'reka-ui'
 
 import { cn } from '@/lib/utils'
 
@@ -40,8 +41,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       >
         <slot />
 
-        <DialogClose class="absolute hover:bg-secondary p-0.5 right-3 rounded-md top-3 transition-colors">
-          <Icon name="lucide:x" class="h-4 w-4" />
+        <DialogClose class="absolute hover:bg-secondary p-0.5 right-4 rounded-md top-4 transition-colors">
+          <X class="h-4 w-4" />
           <span class="sr-only">Close</span>
         </DialogClose>
       </DialogContent>

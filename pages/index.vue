@@ -20,11 +20,11 @@
           </p>
           <div class="flex flex-col gap-4 justify-center sm:flex-row">
             <Link href="/controller">
-              <Icon name="lucide:play-circle" size="20" class="mr-2" />
+              <Icon name="lucide:play-circle" size="20" />
               Commencer maintenant
             </Link>
             <Link href="/about">
-              <Icon name="lucide:info" size="20" class="mr-2" />
+              <Icon name="lucide:info" size="20" />
               En savoir plus
             </Link>
           </div>

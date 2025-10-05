@@ -3,21 +3,21 @@ import type { HTMLAttributes } from 'vue'
 
 import { cn } from '@/lib/utils'
 
-const props = defineProps<{
+defineProps<{
   class?: HTMLAttributes['class']
 }>()
 </script>
 
 <template>
-  <td
-    data-slot="table-cell"
+  <p
+    data-slot="empty-description"
     :class="
       cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-        props.class
+        'text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4',
+        $attrs.class ?? ''
       )
     "
   >
     <slot />
-  </td>
+  </p>
 </template>

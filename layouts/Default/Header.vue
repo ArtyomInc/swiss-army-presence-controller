@@ -18,37 +18,34 @@
       </NuxtLink>
 
       <nav class="gap-1 hidden items-center md:flex">
-        <NuxtLink
+        <Link
+        variant="ghost"
           to="/"
-          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
         >
           Accueil
-        </NuxtLink>
-        <NuxtLink
+        </Link>
+        <Link
           to="/controller"
-          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
+        variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
         >
           Application
-        </NuxtLink>
-        <NuxtLink
+        </Link>
+        <Link
           to="/about"
-          class="font-medium hover:bg-accent hover:text-accent-foreground px-3 py-2 rounded-md text-sm transition-all"
+        variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
         >
           À propos
-        </NuxtLink>
+        </Link>
       </nav>
 
       <div class="flex gap-3 items-center">
-        <NuxtLink to="/controller" class="hidden sm:block">
-          <Button size="sm" class="bg-primary hover:bg-primary/90">
-            <Icon name="lucide:play-circle" size="16" class="mr-2" />
+        <Link to="/controller" class="hidden sm:flex">
+            <Icon name="lucide:play-circle" size="16"  />
             Commencer
-          </Button>
-        </NuxtLink>
-
+        </Link>
         <Button variant="ghost" size="sm" class="md:hidden" @click="toggleMobileMenu">
           <Icon name="lucide:menu" size="20" />
         </Button>
@@ -57,37 +54,32 @@
 
     <div v-show="mobileMenuOpen" class="bg-background border-t md:hidden">
       <nav class="container max-w-screen-xl mx-auto px-4 py-4 space-y-2">
-        <NuxtLink
+        <Link
           to="/"
-          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
           @click="mobileMenuOpen = false"
         >
           Accueil
-        </NuxtLink>
-        <NuxtLink
+        </Link>
+        <Link
           to="/controller"
-          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
           @click="mobileMenuOpen = false"
         >
           Application
-        </NuxtLink>
-        <NuxtLink
+        </Link>
+        <Link
           to="/about"
-          class="block font-medium hover:bg-accent px-3 py-2 rounded-md text-sm transition-all"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
           @click="mobileMenuOpen = false"
         >
           À propos
-        </NuxtLink>
+        </Link>
         <div class="border-t pt-2">
-          <NuxtLink to="/controller" @click="mobileMenuOpen = false">
-            <Button size="sm" class="bg-primary hover:bg-primary/90 w-full">
+          <Link to="/controller" @click="mobileMenuOpen = false">
               <Icon name="lucide:play-circle" size="16" class="mr-2" />
               Commencer l'application
-            </Button>
-          </NuxtLink>
+          </Link>
         </div>
       </nav>
     </div>
@@ -95,6 +87,8 @@
 </template>
 
 <script setup lang="ts">
+import { Link } from '@/ui/link'
+
 const mobileMenuOpen = ref(false)
 
 const toggleMobileMenu = () => {

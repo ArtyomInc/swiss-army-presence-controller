@@ -3,13 +3,13 @@ import type { HTMLAttributes } from 'vue'
 
 import { cn } from '@/lib/utils'
 
-const props = defineProps<{
+interface SkeletonProps {
   class?: HTMLAttributes['class']
-}>()
+}
+
+const props = defineProps<SkeletonProps>()
 </script>
 
 <template>
-  <h3 data-slot="card-title" :class="cn('leading-none font-semibold', props.class)">
-    <slot />
-  </h3>
+  <div data-slot="skeleton" :class="cn('animate-pulse rounded-md bg-primary/10', props.class)" />
 </template>
