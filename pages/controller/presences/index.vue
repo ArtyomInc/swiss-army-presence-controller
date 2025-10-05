@@ -24,21 +24,26 @@
           </div>
         </div>
       </CardHeader>
-    </Card>
-
-    <Card v-if="totalPeople === 0">
-      <CardContent class="py-12 text-center">
-        <Icon name="lucide:users" size="48" class="mb-4 mx-auto text-muted-foreground" />
-        <h3 class="font-medium mb-2 text-lg">Aucune présence enregistrée</h3>
-        <p class="mb-6 text-muted-foreground">Commencez par ajouter des personnes à vos sections</p>
-        <Link href="/controller/register">
-          <Icon name="lucide:user-plus" size="20" class="mr-2" />
-          Enregistrer la première présence
-        </Link>
+      <CardContent v-if="totalPeople === 0">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Icon name="lucide:users" />
+            </EmptyMedia>
+            <EmptyTitle>Aucune présence enregistrée</EmptyTitle>
+            <EmptyDescription>Commencez par ajouter des personnes à vos sections</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Link href="/controller/register">
+              <Icon name="lucide:user-plus" size="20" class="mr-2" />
+              Enregistrer des présences
+            </Link>
+          </EmptyContent>
+        </Empty>
       </CardContent>
     </Card>
 
-    <div v-else class="gap-6 grid">
+    <div v-if="totalPeople > 0" class="gap-6 grid">
       <Card v-for="section in sections" :key="section.name">
         <CardHeader>
           <div class="flex items-center justify-between">
@@ -152,9 +157,15 @@
           </Table>
         </CardContent>
 
-        <CardContent v-else class="py-8 text-center">
-          <Icon name="lucide:user-x" size="32" class="mb-2 mx-auto text-muted-foreground" />
-          <p class="text-muted-foreground">Aucune personne dans cette section</p>
+        <CardContent v-else>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon name="lucide:user-x" />
+              </EmptyMedia>
+              <EmptyDescription>Aucune personne dans cette section</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     </div>
@@ -179,6 +190,7 @@
 
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import { usePresenceController } from '~/composables/usePresenceController'
 
@@ -288,14 +300,4 @@ const formatDateTime = (date: Date) => {
     year: 'numeric'
   }).format(date)
 }
-
-watchEffect(() => {
-  if (import.meta.client && sections.value.length === 0) {
-    setTimeout(() => {
-      if (sections.value.length === 0) {
-        navigateTo('/controller')
-      }
-    }, 1000)
-  }
-})
 </script>

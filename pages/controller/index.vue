@@ -12,9 +12,12 @@
         <div class="text-muted-foreground text-sm">
           Debug: {{ sectionsModel.length }} sections dans le modèle, {{ sectionNames.length }} sections dans le store
         </div>
-        <Link href="/controller/register" :class="{ 'pointer-events-none opacity-50': sectionsModel.length === 0 }">
-          Suivant <Icon name="lucide:arrow-right" size="20" />
-        </Link>
+        <div class="flex gap-2">
+          <Link href="/controller/register">
+            <Icon name="lucide:user-plus" size="20" class="mr-2" />
+            Enregistrer des présences
+          </Link>
+        </div>
       </CardFooter>
     </Card>
 
@@ -45,10 +48,20 @@
     </Card>
     <Card>
       <CardHeader>
-        <CardTitle>Gestion des enregistrements</CardTitle>
+        <CardTitle>Gestion des données stockées</CardTitle>
         <CardDescription>Supprimez toutes les données stockées localement</CardDescription>
       </CardHeader>
-      <CardContent class="space-y-4">
+      <CardContent v-if="totalPeople === 0 && sectionsModel.length === 0">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Icon name="lucide:database" />
+            </EmptyMedia>
+            <EmptyDescription>Aucune donnée à gérer pour le moment</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </CardContent>
+      <CardContent v-else class="space-y-4">
         <div v-if="totalPeople > 0" class="flex items-center justify-between">
           <span>Supprimer toutes les personnes enregistrées.</span>
           <Dialog>
@@ -126,6 +139,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/ui/dialog'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import MultiField from '~/components/MultiField.vue'
 import { usePresenceController } from '~/composables/usePresenceController'

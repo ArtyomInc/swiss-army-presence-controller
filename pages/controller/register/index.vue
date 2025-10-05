@@ -5,7 +5,24 @@
         <CardTitle>Enregistrement des Présences</CardTitle>
         <CardDescription>Ajoutez une personne à une section pour enregistrer sa présence</CardDescription>
       </CardHeader>
-      <CardContent class="flex flex-col gap-4">
+      <CardContent v-if="sectionNames.length === 0">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Icon name="lucide:alert-triangle" />
+            </EmptyMedia>
+            <EmptyTitle>Aucune section configurée</EmptyTitle>
+            <EmptyDescription>Vous devez d'abord configurer au moins une section</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Link href="/controller">
+              <Icon name="lucide:settings" size="20" class="mr-2" />
+              Configurer les sections
+            </Link>
+          </EmptyContent>
+        </Empty>
+      </CardContent>
+      <CardContent v-else class="flex flex-col gap-4">
         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
           <div class="gap-1.5 grid items-center w-full">
             <Label for="firstname">Prénom :</Label>
@@ -37,16 +54,8 @@
           <Checkbox id="hasServiceBooklet" v-model="userForm.hasServiceBooklet" />
           <Label for="hasServiceBooklet">Livret de service</Label>
         </div>
-        <div v-if="sectionNames.length === 0" class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
-          <p class="dark:text-yellow-200 text-sm text-yellow-800">
-            <Icon name="lucide:alert-triangle" size="16" class="inline mr-1" />
-            Aucune section configurée.
-            <Link href="/controller" class="font-medium underline">Retourner à la configuration</Link>
-          </p>
-        </div>
       </CardContent>
-      <CardFooter class="flex justify-between">
-        <Link href="/controller" variant="outline"> <Icon name="lucide:arrow-left" size="20" /> Retour </Link>
+      <CardFooter v-if="sectionNames.length > 0" class="flex justify-end">
         <Button :disabled="!canSubmit" class="min-w-[120px]" @click="handleSubmit">
           <template v-if="isSubmitting">
             <Spinner class="mr-2" />
@@ -104,6 +113,7 @@
 
 <script setup lang="ts">
 import { Checkbox } from '@/ui/checkbox'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import { Spinner } from '@/ui/spinner'
 import { usePresenceController } from '~/composables/usePresenceController'
@@ -175,14 +185,4 @@ const formatTime = (date: Date) => {
     second: '2-digit'
   }).format(date)
 }
-
-watchEffect(() => {
-  if (import.meta.client && sectionNames.value.length === 0) {
-    setTimeout(() => {
-      if (sectionNames.value.length === 0) {
-        navigateTo('/controller')
-      }
-    }, 1000)
-  }
-})
 </script>

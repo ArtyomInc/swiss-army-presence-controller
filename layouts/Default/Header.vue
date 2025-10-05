@@ -48,6 +48,7 @@
       <nav class="container max-w-screen-xl mx-auto px-4 py-4 space-y-2">
         <Link
           to="/"
+          variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
           @click="mobileMenuOpen = false"
         >
@@ -55,6 +56,7 @@
         </Link>
         <Link
           to="/controller"
+          variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
           @click="mobileMenuOpen = false"
         >
@@ -62,6 +64,7 @@
         </Link>
         <Link
           to="/about"
+          variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
           @click="mobileMenuOpen = false"
         >
