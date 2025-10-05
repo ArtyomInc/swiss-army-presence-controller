@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen">
-    <section class="px-4 py-20 text-center">
-      <div class="max-w-6xl mx-auto">
+  <div class="-mx-5 min-h-screen md:-mx-10">
+    <section class="px-4 py-20 text-center md:px-10">
+      <div class="max-w-screen-xl mx-auto">
         <div class="mb-8">
           <div
             class="bg-primary/10 font-medium gap-2 inline-flex items-center mb-6 px-3 py-1 rounded-full text-primary text-sm"
@@ -32,8 +32,8 @@
       </div>
     </section>
 
-    <section class="px-4 py-20">
-      <div class="max-w-6xl mx-auto">
+    <section class="px-4 py-20 md:px-10">
+      <div class="max-w-screen-xl mx-auto">
         <div class="mb-16 text-center">
           <h2 class="font-bold mb-4 md:text-4xl text-3xl">Fonctionnalités principales</h2>
           <p class="max-w-2xl mx-auto text-muted-foreground text-xl">

@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-w-4xl mx-auto px-4 py-8">
+  <div>
     <section class="mb-12">
       <h2 class="font-bold mb-4 text-2xl">L'objectif</h2>
       <div class="max-w-none prose prose-muted">
