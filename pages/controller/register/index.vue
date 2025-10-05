@@ -7,20 +7,20 @@
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-          <div>
+          <div class="gap-1.5 grid items-center w-full">
             <Label for="firstname">Prénom :</Label>
             <Input id="firstname" v-model="userForm.firstName" placeholder="Jean" @keyup.enter="handleSubmit" />
           </div>
-          <div>
+          <div class="gap-1.5 grid items-center w-full">
             <Label for="lastname">Nom :</Label>
             <Input id="lastname" v-model="userForm.lastName" placeholder="Du Jardin" @keyup.enter="handleSubmit" />
           </div>
         </div>
 
-        <div>
+        <div class="gap-1.5 grid items-center w-full">
           <Label for="section">Section :</Label>
-          <Select v-model="userForm.section">
-            <SelectTrigger id="section">
+          <Select v-model="userForm.section" >
+            <SelectTrigger id="section" class="w-full">
               <SelectValue placeholder="Sélectionner une section" />
             </SelectTrigger>
             <SelectContent>
@@ -33,7 +33,7 @@
           </Select>
         </div>
 
-        <div class="flex items-center space-x-2">
+        <div class="flex gap-1.5 items-center w-full">
           <Checkbox id="hasServiceBooklet" v-model="userForm.hasServiceBooklet" />
           <Label for="hasServiceBooklet">Livret de service</Label>
         </div>
@@ -49,7 +49,7 @@
         <Link href="/controller" variant="outline"> <Icon name="lucide:arrow-left" size="20" /> Retour </Link>
         <Button :disabled="!canSubmit" class="min-w-[120px]" @click="handleSubmit">
           <template v-if="isSubmitting">
-            <Icon name="lucide:loader-2" size="16" class="animate-spin mr-2" />
+            <Spinner class="mr-2" />
             Ajout...
           </template>
           <template v-else>
@@ -105,7 +105,7 @@
 <script setup lang="ts">
 import { Checkbox } from '@/ui/checkbox'
 import { Link } from '@/ui/link'
-
+import { Spinner } from '@/ui/spinner'
 import { usePresenceController } from '~/composables/usePresenceController'
 
 useSeoMeta({

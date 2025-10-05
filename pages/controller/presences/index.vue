@@ -180,7 +180,6 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Link } from '@/ui/link'
-
 import { usePresenceController } from '~/composables/usePresenceController'
 
 interface Person {

@@ -18,33 +18,25 @@
       </NuxtLink>
 
       <nav class="gap-1 hidden items-center md:flex">
-        <Link
-        variant="ghost"
-          to="/"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
-        >
+        <Link variant="ghost" to="/" :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }">
           Accueil
         </Link>
         <Link
           to="/controller"
-        variant="ghost"
+          variant="ghost"
           :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
         >
           Application
         </Link>
-        <Link
-          to="/about"
-        variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
-        >
+        <Link to="/about" variant="ghost" :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }">
           À propos
         </Link>
       </nav>
 
       <div class="flex gap-3 items-center">
         <Link to="/controller" class="hidden sm:flex">
-            <Icon name="lucide:play-circle" size="16"  />
-            Commencer
+          <Icon name="lucide:play-circle" size="16" />
+          Commencer
         </Link>
         <Button variant="ghost" size="sm" class="md:hidden" @click="toggleMobileMenu">
           <Icon name="lucide:menu" size="20" />
@@ -77,8 +69,8 @@
         </Link>
         <div class="border-t pt-2">
           <Link to="/controller" @click="mobileMenuOpen = false">
-              <Icon name="lucide:play-circle" size="16" class="mr-2" />
-              Commencer l'application
+            <Icon name="lucide:play-circle" size="16" class="mr-2" />
+            Commencer l'application
           </Link>
         </div>
       </nav>
