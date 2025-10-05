@@ -36,7 +36,7 @@
 
         <div class="gap-1.5 grid items-center w-full">
           <Label for="section">Section :</Label>
-          <Select v-model="userForm.section" >
+          <Select v-model="userForm.section">
             <SelectTrigger id="section" class="w-full">
               <SelectValue placeholder="Sélectionner une section" />
             </SelectTrigger>

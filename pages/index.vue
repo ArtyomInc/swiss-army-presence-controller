@@ -1,6 +1,6 @@
 <template>
-  <div class="-mx-5 min-h-screen md:-mx-10">
-    <section class="px-4 py-20 text-center md:px-10">
+  <div class="-mx-5 md:-mx-10 min-h-screen">
+    <section class="md:px-10 px-4 py-20 text-center">
       <div class="max-w-screen-xl mx-auto">
         <div class="mb-8">
           <div
@@ -32,7 +32,7 @@
       </div>
     </section>
 
-    <section class="px-4 py-20 md:px-10">
+    <section class="md:px-10 px-4 py-20">
       <div class="max-w-screen-xl mx-auto">
         <div class="mb-16 text-center">
           <h2 class="font-bold mb-4 md:text-4xl text-3xl">Fonctionnalités principales</h2>
@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="lg:order-2 order-1">
-              <NuxtImg
+              <ImageZoomable
                 src="/pictures/create_sections.png"
                 alt="Création de sections"
                 class="border border-border rounded-xl shadow-2xl w-full"
@@ -68,7 +68,7 @@
 
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div>
-              <NuxtImg
+              <ImageZoomable
                 src="/pictures/add_presence.png"
                 alt="Ajout de présence"
                 class="border border-border rounded-xl shadow-2xl w-full"
@@ -122,7 +122,7 @@
               </div>
             </div>
             <div class="lg:order-2 order-1">
-              <NuxtImg
+              <ImageZoomable
                 src="/pictures/manage_presence_in_sections_views.png"
                 alt="Gestion des présences"
                 class="border border-border rounded-xl shadow-2xl w-full"
