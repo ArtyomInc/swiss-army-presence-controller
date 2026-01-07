@@ -1,17 +1,4 @@
-interface Person {
-  id: string
-  firstName: string
-  lastName: string
-  grade: string
-  section: string
-  registeredAt: Date
-  hasServiceBooklet: boolean
-}
-
-interface Section {
-  name: string
-  createdAt: Date
-}
+import type { Person, Section } from '~/types/presence'
 
 export const usePresenceController = () => {
   const sections = ref<Section[]>([])

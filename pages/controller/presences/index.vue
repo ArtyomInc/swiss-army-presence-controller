@@ -201,20 +201,12 @@
 </template>
 
 <script setup lang="ts">
+import type { Person } from '~/types/presence'
+
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import { usePresenceController } from '~/composables/usePresenceController'
-
-interface Person {
-  id: string
-  firstName: string
-  lastName: string
-  grade: string
-  section: string
-  registeredAt: Date
-  hasServiceBooklet: boolean
-}
 
 useSeoMeta({
   description:
