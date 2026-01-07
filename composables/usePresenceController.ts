@@ -1,10 +1,11 @@
 import type { Person, Section } from '~/types/presence'
 
-export const usePresenceController = () => {
-  const sections = ref<Section[]>([])
-  const sectionNames = computed(() => sections.value.map((s) => s.name))
+// État global partagé
+const sections = ref<Section[]>([])
+const people = ref<Person[]>([])
 
-  const people = ref<Person[]>([])
+export const usePresenceController = () => {
+  const sectionNames = computed(() => sections.value.map((s) => s.name))
 
   const initializeData = () => {
     if (import.meta.client) {
@@ -110,13 +111,7 @@ export const usePresenceController = () => {
     }
   }
 
-  const updatePerson = (
-    id: string,
-    firstName: string,
-    lastName: string,
-    grade: string,
-    hasServiceBooklet: boolean
-  ) => {
+  const updatePerson = (id: string, firstName: string, lastName: string, grade: string, hasServiceBooklet: boolean) => {
     const index = people.value.findIndex((p) => p.id === id)
     if (index === -1) return false
 
@@ -124,13 +119,15 @@ export const usePresenceController = () => {
       return false
     }
 
-    people.value[index] = {
+    const updatedPerson = {
       ...people.value[index],
       firstName: firstName.trim(),
       grade: grade.trim(),
       hasServiceBooklet,
       lastName: lastName.trim()
     }
+
+    people.value.splice(index, 1, updatedPerson)
 
     savePeople()
     return true

@@ -196,18 +196,18 @@
         <div class="flex flex-col gap-4">
           <div class="gap-1.5 grid items-center w-full">
             <Label for="edit-grade">Grade :</Label>
-            <Input id="edit-grade" v-model="editForm.grade" placeholder="Sdt" />
+            <Input id="edit-grade" v-model="editFormGrade" placeholder="Sdt" />
           </div>
           <div class="gap-1.5 grid items-center w-full">
             <Label for="edit-firstname">Prénom :</Label>
-            <Input id="edit-firstname" v-model="editForm.firstName" placeholder="Jean" />
+            <Input id="edit-firstname" v-model="editFormFirstName" placeholder="Jean" />
           </div>
           <div class="gap-1.5 grid items-center w-full">
             <Label for="edit-lastname">Nom :</Label>
-            <Input id="edit-lastname" v-model="editForm.lastName" placeholder="Du Jardin" />
+            <Input id="edit-lastname" v-model="editFormLastName" placeholder="Du Jardin" />
           </div>
-          <div class="flex items-center gap-2">
-            <Checkbox id="edit-booklet" v-model:checked="editForm.hasServiceBooklet" />
+          <div class="flex gap-2 items-center">
+            <Checkbox id="edit-booklet" v-model:checked="editFormHasServiceBooklet" />
             <Label for="edit-booklet" class="cursor-pointer">Livret de service</Label>
           </div>
         </div>
@@ -258,15 +258,13 @@ const { getPeopleBySection, people, removePerson, sections, updatePerson } = use
 const totalPeople = computed(() => people.value.length)
 
 const personToEdit = ref<Person | null>(null)
-const editForm = reactive({
-  firstName: '',
-  grade: '',
-  hasServiceBooklet: false,
-  lastName: ''
-})
+const editFormGrade = ref('')
+const editFormFirstName = ref('')
+const editFormLastName = ref('')
+const editFormHasServiceBooklet = ref(false)
 
 const canSaveEdit = computed(() => {
-  return editForm.grade.trim() && editForm.firstName.trim() && editForm.lastName.trim()
+  return editFormGrade.value.trim() && editFormFirstName.value.trim() && editFormLastName.value.trim()
 })
 
 const sortConfigs = ref<Record<string, { field: string; order: 'asc' | 'desc' }>>({})
@@ -334,18 +332,18 @@ const personToRemove = ref<Person | null>(null)
 
 const editPerson = (person: Person) => {
   personToEdit.value = person
-  editForm.grade = person.grade
-  editForm.firstName = person.firstName
-  editForm.lastName = person.lastName
-  editForm.hasServiceBooklet = person.hasServiceBooklet
+  editFormGrade.value = person.grade
+  editFormFirstName.value = person.firstName
+  editFormLastName.value = person.lastName
+  editFormHasServiceBooklet.value = person.hasServiceBooklet
 }
 
 const cancelEdit = () => {
   personToEdit.value = null
-  editForm.grade = ''
-  editForm.firstName = ''
-  editForm.lastName = ''
-  editForm.hasServiceBooklet = false
+  editFormGrade.value = ''
+  editFormFirstName.value = ''
+  editFormLastName.value = ''
+  editFormHasServiceBooklet.value = false
 }
 
 const saveEdit = () => {
@@ -353,10 +351,10 @@ const saveEdit = () => {
 
   const success = updatePerson(
     personToEdit.value.id,
-    editForm.firstName,
-    editForm.lastName,
-    editForm.grade,
-    editForm.hasServiceBooklet
+    editFormFirstName.value,
+    editFormLastName.value,
+    editFormGrade.value,
+    editFormHasServiceBooklet.value
   )
 
   if (success) {
