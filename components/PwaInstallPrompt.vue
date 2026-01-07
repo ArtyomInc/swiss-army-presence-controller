@@ -16,11 +16,9 @@
           <Icon name="lucide:download" class="animate-bounce flex-shrink-0 h-6 text-white w-6" />
           <div class="text-white">
             <p class="font-semibold sm:text-base text-sm">
-              {{ isIOS ? 'Ajouter à l\'écran d\'accueil' : 'Installer l\'application' }}
+              {{ isIOS ? "Ajouter à l'écran d'accueil" : "Installer l'application" }}
             </p>
-            <p class="sm:text-sm text-green-100 text-xs">
-              Accès instantané • Fonctionne hors ligne • 0 Mo de données
-            </p>
+            <p class="sm:text-sm text-green-100 text-xs">Accès instantané • Fonctionne hors ligne • 0 Mo de données</p>
           </div>
         </div>
 
