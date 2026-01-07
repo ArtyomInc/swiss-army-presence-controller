@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun update:*)",
+      "Bash(bunx nuxi typecheck:*)",
+      "Bash(bun run lint:fix:*)",
+      "Bash(bun run format:check:*)",
+      "Bash(bun run build:*)",
+      "Bash(bun add:*)",
+      "Bash(bunx @svgr/cli:*)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(bunx sharp-cli:*)",
+      "Bash(bun run format:*)",
+      "Bash(rm:*)",
+      "Bash(bun run dev)",
+      "Bash(nuxt dev:*)",
+      "Bash(bunx nuxt dev:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)"
+    ]
+  }
+}
