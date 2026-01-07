@@ -10,7 +10,7 @@
             </CardDescription>
           </div>
           <div class="flex gap-2">
-            <input ref="fileInputRef" type="file" accept=".xlsx,.xls,.csv" class="hidden" @change="handleFileSelect" />
+            <input ref="fileInputRef" type="file" accept=".xlsx,.xls" class="hidden" @change="handleFileSelect" />
             <Button @click="triggerFileInput">
               <Icon name="lucide:upload" size="20" class="mr-2" />
               Importer
@@ -30,7 +30,7 @@
               <Icon name="lucide:users" />
             </EmptyMedia>
             <EmptyTitle>Aucune personne dans la liste</EmptyTitle>
-            <EmptyDescription>Importez un fichier XLSX ou CSV pour commencer</EmptyDescription>
+            <EmptyDescription>Importez un fichier XLSX pour commencer</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Button @click="triggerFileInput">

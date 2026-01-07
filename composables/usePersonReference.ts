@@ -103,36 +103,7 @@ export const usePersonReference = () => {
     try {
       const fileExtension = file.name.split('.').pop()?.toLowerCase()
 
-      if (fileExtension === 'csv') {
-        // Import CSV
-        const text = await file.text()
-        const lines = text.split('\n')
-
-        // Ignorer la première ligne (en-tête)
-        for (let i = 1; i < lines.length; i++) {
-          const line = lines[i].trim()
-          if (!line) continue
-
-          const [grade, fullName] = line.split(/[,;]/).map((s) => s.trim())
-          if (!grade || !fullName) {
-            result.errors.push(`Ligne ${i + 1}: Format invalide`)
-            continue
-          }
-
-          const { firstName, lastName } = parseFullName(fullName)
-          if (!firstName || !lastName) {
-            result.errors.push(`Ligne ${i + 1}: Impossible de séparer nom et prénom`)
-            continue
-          }
-
-          const added = addPerson(firstName, lastName, grade, file.name)
-          if (added) {
-            result.success++
-          } else {
-            result.duplicates++
-          }
-        }
-      } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
+      if (fileExtension === 'xlsx' || fileExtension === 'xls') {
         // Import XLSX
         const XLSX = await import('xlsx')
         const data = await file.arrayBuffer()
@@ -167,7 +138,7 @@ export const usePersonReference = () => {
           }
         }
       } else {
-        result.errors.push('Format de fichier non supporté. Utilisez .xlsx, .xls ou .csv')
+        result.errors.push('Format de fichier non supporté. Utilisez .xlsx ou .xls')
       }
     } catch (error) {
       result.errors.push(

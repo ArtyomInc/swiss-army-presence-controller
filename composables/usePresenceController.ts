@@ -110,6 +110,32 @@ export const usePresenceController = () => {
     }
   }
 
+  const updatePerson = (
+    id: string,
+    firstName: string,
+    lastName: string,
+    grade: string,
+    hasServiceBooklet: boolean
+  ) => {
+    const index = people.value.findIndex((p) => p.id === id)
+    if (index === -1) return false
+
+    if (!firstName.trim() || !lastName.trim() || !grade.trim()) {
+      return false
+    }
+
+    people.value[index] = {
+      ...people.value[index],
+      firstName: firstName.trim(),
+      grade: grade.trim(),
+      hasServiceBooklet,
+      lastName: lastName.trim()
+    }
+
+    savePeople()
+    return true
+  }
+
   const clearSections = () => {
     sections.value = []
     if (import.meta.client) {
@@ -156,6 +182,7 @@ export const usePresenceController = () => {
 
     sectionNames,
     sections: readonly(sections),
-    setSections
+    setSections,
+    updatePerson
   }
 }

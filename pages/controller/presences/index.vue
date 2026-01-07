@@ -12,6 +12,12 @@
               dans {{ sections.length }} section{{ sections.length > 1 ? 's' : '' }}
             </CardDescription>
           </div>
+          <div v-if="totalPeople > 0" class="flex gap-2">
+            <Button variant="outline" @click="exportToExcel">
+              <Icon name="lucide:download" size="20" class="mr-2" />
+              Exporter XLSX
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent v-if="totalPeople === 0">
@@ -145,14 +151,19 @@
                   {{ formatDateTime(person.registeredAt) }}
                 </TableCell>
                 <TableCell class="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    class="hover:bg-destructive/10 hover:text-destructive text-destructive"
-                    @click="confirmRemovePerson(person)"
-                  >
-                    <Icon name="lucide:trash-2" size="14" />
-                  </Button>
+                  <div class="flex gap-1 justify-end">
+                    <Button variant="ghost" size="sm" @click="editPerson(person)">
+                      <Icon name="lucide:pencil" size="14" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      class="hover:bg-destructive/10 hover:text-destructive text-destructive"
+                      @click="confirmRemovePerson(person)"
+                    >
+                      <Icon name="lucide:trash-2" size="14" />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -172,6 +183,42 @@
       </Card>
     </div>
 
+    <!-- Dialog d'édition -->
+    <Dialog :open="!!personToEdit" @update:open="(open) => !open && cancelEdit()">
+      <DialogContent class="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Modifier la présence</DialogTitle>
+          <DialogDescription>
+            Modifiez les informations de {{ personToEdit?.grade }} {{ personToEdit?.firstName }}
+            {{ personToEdit?.lastName }}
+          </DialogDescription>
+        </DialogHeader>
+        <div class="flex flex-col gap-4">
+          <div class="gap-1.5 grid items-center w-full">
+            <Label for="edit-grade">Grade :</Label>
+            <Input id="edit-grade" v-model="editForm.grade" placeholder="Sdt" />
+          </div>
+          <div class="gap-1.5 grid items-center w-full">
+            <Label for="edit-firstname">Prénom :</Label>
+            <Input id="edit-firstname" v-model="editForm.firstName" placeholder="Jean" />
+          </div>
+          <div class="gap-1.5 grid items-center w-full">
+            <Label for="edit-lastname">Nom :</Label>
+            <Input id="edit-lastname" v-model="editForm.lastName" placeholder="Du Jardin" />
+          </div>
+          <div class="flex items-center gap-2">
+            <Checkbox id="edit-booklet" v-model:checked="editForm.hasServiceBooklet" />
+            <Label for="edit-booklet" class="cursor-pointer">Livret de service</Label>
+          </div>
+        </div>
+        <DialogFooter class="flex gap-2 justify-end">
+          <Button variant="outline" @click="cancelEdit">Annuler</Button>
+          <Button :disabled="!canSaveEdit" @click="saveEdit">Enregistrer</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+    <!-- Dialog de suppression -->
     <Dialog :open="!!personToRemove" @update:open="(open) => !open && cancelRemove()">
       <DialogContent class="sm:max-w-md">
         <DialogHeader>
@@ -193,8 +240,10 @@
 <script setup lang="ts">
 import type { Person } from '~/types/presence'
 
+import { Checkbox } from '@/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
+import { Label } from '@/ui/label'
 import { Link } from '@/ui/link'
 import { usePresenceController } from '~/composables/usePresenceController'
 
@@ -204,9 +253,21 @@ useSeoMeta({
   title: 'Présences - Presence Controller'
 })
 
-const { getPeopleBySection, people, removePerson, sections } = usePresenceController()
+const { getPeopleBySection, people, removePerson, sections, updatePerson } = usePresenceController()
 
 const totalPeople = computed(() => people.value.length)
+
+const personToEdit = ref<Person | null>(null)
+const editForm = reactive({
+  firstName: '',
+  grade: '',
+  hasServiceBooklet: false,
+  lastName: ''
+})
+
+const canSaveEdit = computed(() => {
+  return editForm.grade.trim() && editForm.firstName.trim() && editForm.lastName.trim()
+})
 
 const sortConfigs = ref<Record<string, { field: string; order: 'asc' | 'desc' }>>({})
 
@@ -271,6 +332,38 @@ const getSortedPeopleBySection = (sectionName: string) => {
 
 const personToRemove = ref<Person | null>(null)
 
+const editPerson = (person: Person) => {
+  personToEdit.value = person
+  editForm.grade = person.grade
+  editForm.firstName = person.firstName
+  editForm.lastName = person.lastName
+  editForm.hasServiceBooklet = person.hasServiceBooklet
+}
+
+const cancelEdit = () => {
+  personToEdit.value = null
+  editForm.grade = ''
+  editForm.firstName = ''
+  editForm.lastName = ''
+  editForm.hasServiceBooklet = false
+}
+
+const saveEdit = () => {
+  if (!canSaveEdit.value || !personToEdit.value) return
+
+  const success = updatePerson(
+    personToEdit.value.id,
+    editForm.firstName,
+    editForm.lastName,
+    editForm.grade,
+    editForm.hasServiceBooklet
+  )
+
+  if (success) {
+    cancelEdit()
+  }
+}
+
 const confirmRemovePerson = (person: Person) => {
   personToRemove.value = person
 }
@@ -294,5 +387,58 @@ const formatDateTime = (date: Date) => {
     month: '2-digit',
     year: 'numeric'
   }).format(date)
+}
+
+const exportToExcel = async () => {
+  try {
+    const XLSX = await import('xlsx')
+
+    // Préparer les données pour l'export
+    const exportData: Array<{ Grade: string; Nom: string; Prénom: string; Section: string }> = []
+
+    // Trier les personnes par section
+    sections.value.forEach((section) => {
+      const sectionPeople = getPeopleBySection(section.name)
+      sectionPeople.forEach((person) => {
+        exportData.push({
+          Grade: person.grade,
+          Nom: person.lastName,
+          Prénom: person.firstName,
+          Section: person.section
+        })
+      })
+    })
+
+    // Créer un nouveau workbook
+    const wb = XLSX.utils.book_new()
+
+    // Convertir les données en feuille
+    const ws = XLSX.utils.json_to_sheet(exportData)
+
+    // Définir la largeur des colonnes
+    ws['!cols'] = [
+      { wch: 10 }, // Grade
+      { wch: 20 }, // Nom
+      { wch: 20 }, // Prénom
+      { wch: 15 } // Section
+    ]
+
+    // Ajouter un tableau avec filtres automatiques
+    const range = XLSX.utils.decode_range(ws['!ref'] || 'A1')
+    ws['!autofilter'] = { ref: XLSX.utils.encode_range(range) }
+
+    // Ajouter la feuille au workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Présences')
+
+    // Générer le nom de fichier avec la date
+    const date = new Date()
+    const dateStr = date.toISOString().split('T')[0]
+    const fileName = `presences_${dateStr}.xlsx`
+
+    // Télécharger le fichier
+    XLSX.writeFile(wb, fileName)
+  } catch (error) {
+    console.error("Erreur lors de l'export:", error)
+  }
 }
 </script>
