@@ -12,16 +12,6 @@
               dans {{ sections.length }} section{{ sections.length > 1 ? 's' : '' }}
             </CardDescription>
           </div>
-          <div class="flex gap-2">
-            <Link href="/controller/register">
-              <Icon name="lucide:user-plus" size="20" class="mr-2" />
-              Ajouter
-            </Link>
-            <Link href="/controller">
-              <Icon name="lucide:settings" size="20" class="mr-2" />
-              Sections
-            </Link>
-          </div>
         </div>
       </CardHeader>
       <CardContent v-if="totalPeople === 0">
@@ -187,8 +177,8 @@
         <DialogHeader>
           <DialogTitle>Confirmer la suppression</DialogTitle>
           <DialogDescription>
-            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.grade }} {{ personToRemove?.firstName }} {{ personToRemove?.lastName }} de la
-            section {{ personToRemove?.section }} ?
+            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.grade }} {{ personToRemove?.firstName }}
+            {{ personToRemove?.lastName }} de la section {{ personToRemove?.section }} ?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter class="flex gap-2 justify-end">

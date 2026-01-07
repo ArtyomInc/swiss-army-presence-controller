@@ -8,17 +8,6 @@
       <CardContent>
         <MultiField v-model="sectionsModel" block-empty placeholder="Kdo, Rep, Mun, etc." />
       </CardContent>
-      <CardFooter class="flex justify-between">
-        <div class="text-muted-foreground text-sm">
-          Debug: {{ sectionsModel.length }} sections dans le modèle, {{ sectionNames.length }} sections dans le store
-        </div>
-        <div class="flex gap-2">
-          <Link href="/controller/register">
-            <Icon name="lucide:user-plus" size="20" class="mr-2" />
-            Enregistrer des présences
-          </Link>
-        </div>
-      </CardFooter>
     </Card>
 
     <Card v-if="totalPeople > 0">

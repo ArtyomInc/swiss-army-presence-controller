@@ -8,6 +8,10 @@ import { DialogClose, DialogContent, DialogOverlay, DialogPortal, useForwardProp
 
 import { cn } from '@/lib/utils'
 
+defineOptions({
+  inheritAttrs: false
+})
+
 const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<DialogContentEmits>()
 
@@ -28,7 +32,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
             props.class
           )
         "
-        v-bind="forwarded"
+        v-bind="{ ...$attrs, ...forwarded }"
         @pointer-down-outside="
           (event) => {
             const originalEvent = event.detail.originalEvent

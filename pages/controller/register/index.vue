@@ -31,11 +31,27 @@
         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
           <div class="gap-1.5 grid items-center w-full">
             <Label for="firstname">Prénom :</Label>
-            <Input id="firstname" v-model="userForm.firstName" placeholder="Jean" @keyup.enter="handleSubmit" />
+            <PersonAutocompleteInput
+              id="firstname"
+              v-model="userForm.firstName"
+              placeholder="Jean"
+              :people="personnelList"
+              search-field="firstName"
+              @person-selected="handlePersonSelected"
+              @enter="handleSubmit"
+            />
           </div>
           <div class="gap-1.5 grid items-center w-full">
             <Label for="lastname">Nom :</Label>
-            <Input id="lastname" v-model="userForm.lastName" placeholder="Du Jardin" @keyup.enter="handleSubmit" />
+            <PersonAutocompleteInput
+              id="lastname"
+              v-model="userForm.lastName"
+              placeholder="Du Jardin"
+              :people="personnelList"
+              search-field="lastName"
+              @person-selected="handlePersonSelected"
+              @enter="handleSubmit"
+            />
           </div>
         </div>
 
@@ -117,10 +133,14 @@
 </template>
 
 <script setup lang="ts">
+import type { PersonReference } from '~/types/presence'
+
 import { Checkbox } from '@/ui/checkbox'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import { Spinner } from '@/ui/spinner'
+import PersonAutocompleteInput from '~/components/PersonAutocompleteInput.vue'
+import { usePersonReference } from '~/composables/usePersonReference'
 import { usePresenceController } from '~/composables/usePresenceController'
 
 useSeoMeta({
@@ -130,6 +150,7 @@ useSeoMeta({
 })
 
 const { addPerson, people, sectionNames } = usePresenceController()
+const { people: personnelList } = usePersonReference()
 
 const userForm = reactive<{
   firstName?: string
@@ -142,6 +163,13 @@ const userForm = reactive<{
 })
 
 const isSubmitting = ref(false)
+
+// Gérer la sélection d'une personne depuis l'autocomplétion
+const handlePersonSelected = (person: PersonReference) => {
+  userForm.grade = person.grade
+  userForm.firstName = person.firstName
+  userForm.lastName = person.lastName
+}
 
 const canSubmit = computed(() => {
   return (

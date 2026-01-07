@@ -78,7 +78,13 @@ export const usePresenceController = () => {
     saveSections()
   }
 
-  const addPerson = (firstName: string, lastName: string, grade: string, section: string, hasServiceBooklet = false) => {
+  const addPerson = (
+    firstName: string,
+    lastName: string,
+    grade: string,
+    section: string,
+    hasServiceBooklet = false
+  ) => {
     if (firstName.trim() && lastName.trim() && grade.trim() && section) {
       const person: Person = {
         firstName: firstName.trim(),

@@ -20,16 +20,45 @@
       <div class="flex gap-1 items-center ml-auto">
         <nav class="gap-1 hidden items-center md:flex">
           <Link variant="ghost" to="/" :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }">
+            <Icon name="lucide:home" size="16" class="mr-1.5" />
             Accueil
           </Link>
           <Link
             to="/controller"
             variant="ghost"
-            :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
+            :class="{
+              'bg-accent text-accent-foreground': $route.path === '/controller' && !$route.path.includes('/controller/')
+            }"
           >
-            Application
+            <Icon name="lucide:settings" size="16" class="mr-1.5" />
+            Sections
+          </Link>
+          <Link
+            to="/controller/personnel"
+            variant="ghost"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/personnel' }"
+          >
+            <Icon name="lucide:users" size="16" class="mr-1.5" />
+            Personnel
+          </Link>
+          <Link
+            to="/controller/register"
+            variant="ghost"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/register' }"
+          >
+            <Icon name="lucide:user-plus" size="16" class="mr-1.5" />
+            Enregistrer
+          </Link>
+          <Link
+            to="/controller/presences"
+            variant="ghost"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/presences' }"
+          >
+            <Icon name="lucide:list-checks" size="16" class="mr-1.5" />
+            Présences
           </Link>
           <Link to="/about" variant="ghost" :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }">
+            <Icon name="lucide:info" size="16" class="mr-1.5" />
             À propos
           </Link>
         </nav>
@@ -48,15 +77,46 @@
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }"
           @click="mobileMenuOpen = false"
         >
+          <Icon name="lucide:home" size="16" class="mr-1.5" />
           Accueil
         </Link>
         <Link
           to="/controller"
           variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path.startsWith('/controller') }"
+          :class="{
+            'bg-accent text-accent-foreground': $route.path === '/controller' && !$route.path.includes('/controller/')
+          }"
           @click="mobileMenuOpen = false"
         >
-          Application
+          <Icon name="lucide:settings" size="16" class="mr-1.5" />
+          Sections
+        </Link>
+        <Link
+          to="/controller/personnel"
+          variant="ghost"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/personnel' }"
+          @click="mobileMenuOpen = false"
+        >
+          <Icon name="lucide:users" size="16" class="mr-1.5" />
+          Personnel
+        </Link>
+        <Link
+          to="/controller/register"
+          variant="ghost"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/register' }"
+          @click="mobileMenuOpen = false"
+        >
+          <Icon name="lucide:user-plus" size="16" class="mr-1.5" />
+          Enregistrer
+        </Link>
+        <Link
+          to="/controller/presences"
+          variant="ghost"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/presences' }"
+          @click="mobileMenuOpen = false"
+        >
+          <Icon name="lucide:list-checks" size="16" class="mr-1.5" />
+          Présences
         </Link>
         <Link
           to="/about"
@@ -64,6 +124,7 @@
           :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
           @click="mobileMenuOpen = false"
         >
+          <Icon name="lucide:info" size="16" class="mr-1.5" />
           À propos
         </Link>
       </nav>
