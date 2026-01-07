@@ -46,7 +46,6 @@
         </Link>
       </CardFooter>
     </Card>
-    <DataManagement />
     <Card>
       <CardHeader>
         <CardTitle>Gestion des données stockées</CardTitle>
