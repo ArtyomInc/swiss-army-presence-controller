@@ -2,6 +2,7 @@ interface Person {
   id: string
   firstName: string
   lastName: string
+  grade: string
   section: string
   registeredAt: Date
   hasServiceBooklet: boolean
@@ -37,10 +38,12 @@ export const usePresenceController = () => {
             firstName: string
             id: string
             lastName: string
+            grade?: string
             section: string
             hasServiceBooklet?: boolean
           }) => ({
             ...p,
+            grade: p.grade ?? '',
             hasServiceBooklet: p.hasServiceBooklet ?? false,
             registeredAt: new Date(p.registeredAt)
           })
@@ -88,10 +91,11 @@ export const usePresenceController = () => {
     saveSections()
   }
 
-  const addPerson = (firstName: string, lastName: string, section: string, hasServiceBooklet = false) => {
-    if (firstName.trim() && lastName.trim() && section) {
+  const addPerson = (firstName: string, lastName: string, grade: string, section: string, hasServiceBooklet = false) => {
+    if (firstName.trim() && lastName.trim() && grade.trim() && section) {
       const person: Person = {
         firstName: firstName.trim(),
+        grade: grade.trim(),
         hasServiceBooklet,
         id: Date.now().toString(),
         lastName: lastName.trim(),

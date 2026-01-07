@@ -71,6 +71,17 @@
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('grade', section.name)">
+                  <div class="flex gap-2 items-center">
+                    Grade
+                    <Icon
+                      v-if="getSortConfig(section.name).field === 'grade'"
+                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      size="14"
+                    />
+                    <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
+                  </div>
+                </TableHead>
                 <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('firstName', section.name)">
                   <div class="flex gap-2 items-center">
                     Prénom
@@ -127,6 +138,7 @@
                 :key="person.id"
                 class="hover:bg-muted/50"
               >
+                <TableCell class="font-medium">{{ person.grade }}</TableCell>
                 <TableCell class="font-medium">{{ person.firstName }}</TableCell>
                 <TableCell class="font-medium">{{ person.lastName }}</TableCell>
                 <TableCell>
@@ -175,7 +187,7 @@
         <DialogHeader>
           <DialogTitle>Confirmer la suppression</DialogTitle>
           <DialogDescription>
-            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.firstName }} {{ personToRemove?.lastName }} de la
+            Êtes-vous sûr de vouloir supprimer {{ personToRemove?.grade }} {{ personToRemove?.firstName }} {{ personToRemove?.lastName }} de la
             section {{ personToRemove?.section }} ?
           </DialogDescription>
         </DialogHeader>
@@ -198,6 +210,7 @@ interface Person {
   id: string
   firstName: string
   lastName: string
+  grade: string
   section: string
   registeredAt: Date
   hasServiceBooklet: boolean

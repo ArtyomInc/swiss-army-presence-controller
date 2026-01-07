@@ -23,6 +23,11 @@
         </Empty>
       </CardContent>
       <CardContent v-else class="flex flex-col gap-4">
+        <div class="gap-1.5 grid items-center w-full">
+          <Label for="grade">Grade :</Label>
+          <Input id="grade" v-model="userForm.grade" placeholder="Sdt" @keyup.enter="handleSubmit" />
+        </div>
+
         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
           <div class="gap-1.5 grid items-center w-full">
             <Label for="firstname">Prénom :</Label>
@@ -84,7 +89,7 @@
             <div class="flex items-center space-x-3">
               <Icon name="lucide:user-check" size="16" class="dark:text-green-400 text-green-600" />
               <div class="flex-1">
-                <p class="font-medium">{{ person.firstName }} {{ person.lastName }}</p>
+                <p class="font-medium">{{ person.grade }} {{ person.firstName }} {{ person.lastName }}</p>
                 <div class="flex gap-2 items-center">
                   <p class="text-muted-foreground text-sm">{{ person.section }}</p>
                   <span
@@ -129,6 +134,7 @@ const { addPerson, people, sectionNames } = usePresenceController()
 const userForm = reactive<{
   firstName?: string
   lastName?: string
+  grade?: string
   section?: string
   hasServiceBooklet?: boolean
 }>({
@@ -141,6 +147,7 @@ const canSubmit = computed(() => {
   return (
     userForm.firstName?.trim() &&
     userForm.lastName?.trim() &&
+    userForm.grade?.trim() &&
     userForm.section &&
     sectionNames.value.length > 0 &&
     !isSubmitting.value
@@ -164,6 +171,7 @@ const handleSubmit = async () => {
     const person = addPerson(
       userForm.firstName!,
       userForm.lastName!,
+      userForm.grade!,
       userForm.section!,
       userForm.hasServiceBooklet || false
     )
@@ -171,6 +179,7 @@ const handleSubmit = async () => {
     if (person) {
       userForm.firstName = ''
       userForm.lastName = ''
+      userForm.grade = ''
       userForm.hasServiceBooklet = false
     }
   } finally {
