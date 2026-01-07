@@ -27,7 +27,20 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   icon: {
     clientBundle: {
-      icons: ['lucide:download', 'lucide:upload', 'lucide:users', 'lucide:trash-2', 'lucide:plus', 'lucide:x'],
+      icons: [
+        'lucide:download',
+        'lucide:upload',
+        'lucide:users',
+        'lucide:trash-2',
+        'lucide:plus',
+        'lucide:x',
+        'lucide:download-cloud',
+        'lucide:loader-2',
+        'lucide:share',
+        'lucide:check',
+        'lucide:wifi-off',
+        'lucide:wifi'
+      ],
       scan: true
     },
     provider: 'iconify',
@@ -46,29 +59,36 @@ export default defineNuxtConfig({
     '@nuxt/image'
   ],
   pwa: {
+    client: {
+      installPrompt: true,
+      periodicSyncForUpdates: 20
+    },
     devOptions: {
       enabled: false,
       type: 'module'
     },
     manifest: {
       background_color: '#0a0a0a',
+      categories: ['productivity', 'business'],
       description: 'Contrôle de présence pour entrées en service',
       display: 'standalone',
       icons: [
         {
+          purpose: 'any',
           sizes: '192x192',
           src: '/pwa-192x192.png',
           type: 'image/png'
         },
         {
+          purpose: 'any',
           sizes: '512x512',
           src: '/pwa-512x512.png',
           type: 'image/png'
         },
         {
-          purpose: 'any maskable',
+          purpose: 'maskable',
           sizes: '512x512',
-          src: '/pwa-512x512.png',
+          src: '/pwa-512x512-maskable.png',
           type: 'image/png'
         }
       ],
@@ -76,13 +96,37 @@ export default defineNuxtConfig({
       orientation: 'portrait',
       scope: '/',
       short_name: 'Presence Ctrl',
+      shortcuts: [
+        {
+          description: 'Ajouter rapidement une nouvelle présence',
+          icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
+          name: 'Enregistrer présence',
+          short_name: 'Enregistrer',
+          url: '/controller/register?source=shortcut'
+        },
+        {
+          description: 'Consulter toutes les présences enregistrées',
+          icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
+          name: 'Voir présences',
+          short_name: 'Présences',
+          url: '/controller/presences?source=shortcut'
+        },
+        {
+          description: 'Configurer les sections militaires',
+          icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
+          name: 'Gérer sections',
+          short_name: 'Sections',
+          url: '/controller?source=shortcut'
+        }
+      ],
       start_url: '/',
       theme_color: '#0a0a0a'
     },
     registerType: 'prompt',
     workbox: {
       cleanupOutdatedCaches: true,
-      globPatterns: ['**/*.{js,css,html,png,svg,ico,woff,woff2}'],
+      globIgnores: ['**/*.map', '**/node_modules/**', '**/*.md'],
+      globPatterns: ['**/*.{js,css,html}', '**/*.{png,svg,ico,webp}'],
       navigateFallback: '/',
       runtimeCaching: [
         {
@@ -110,6 +154,20 @@ export default defineNuxtConfig({
             networkTimeoutSeconds: 3
           },
           urlPattern: /^https:\/\/umami\.arduc\.ch\/.*/i
+        },
+        {
+          handler: 'CacheFirst',
+          options: {
+            cacheableResponse: {
+              statuses: [0, 200]
+            },
+            cacheName: 'local-images-cache',
+            expiration: {
+              maxAgeSeconds: 60 * 60 * 24 * 365,
+              maxEntries: 50
+            }
+          },
+          urlPattern: /^https?:\/\/[^/]+\/pictures\/.*/i
         }
       ]
     }

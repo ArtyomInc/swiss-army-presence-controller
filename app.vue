@@ -14,6 +14,7 @@ useHead({
 
 <template>
   <div>
+    <NetworkStatus />
     <NuxtRouteAnnouncer />
     <NuxtLayout>
       <NuxtPage />
