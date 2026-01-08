@@ -4,20 +4,19 @@
       <div class="max-w-screen-xl mx-auto">
         <div class="mb-8">
           <div class="flex flex-wrap gap-2 justify-center mb-4">
-
             <div
-            class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
+              class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
             >
-            <Icon name="lucide:shield-check" size="14" />
-            100% Open Source
+              <Icon name="lucide:shield-check" size="14" />
+              100% Open Source
+            </div>
+            <div
+              class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
+            >
+              <Icon name="lucide:server-off" size="14" />
+              Aucune donnée n'est collectée
+            </div>
           </div>
-          <div
-          class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
-          >
-          <Icon name="lucide:server-off" size="14" />
-          Aucune donnée n'est collectée
-        </div>
-      </div>
           <h1
             class="bg-clip-text bg-gradient-to-r font-bold from-primary mb-6 md:text-6xl text-4xl text-transparent to-primary/60"
           >
@@ -54,23 +53,32 @@
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
               <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:layers" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Configuration des sections</h3>
+                <Icon name="lucide:file-spreadsheet" size="32" class="text-primary" />
+                <h3 class="font-bold md:text-3xl text-2xl">Import rapide du personnel</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Créez et organisez facilement vos sections militaires avec une interface intuitive. Ajoutez, supprimez
-                et gérez vos groupes en quelques clics.
+                Importez facilement votre liste de personnel depuis un fichier Excel pour gagner du temps. Remplissez automatiquement les noms lors de l'enregistrement des présences grâce à l'autocomplétion.
               </p>
-              <div class="flex gap-2 items-center text-muted-foreground text-sm">
-                <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                <span>Configuration rapide et flexible</span>
+              <div class="space-y-2">
+                <div class="flex gap-2 items-center text-muted-foreground text-sm">
+                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
+                  <span>Import Excel de la liste du personnel</span>
+                </div>
+                <div class="flex gap-2 items-center text-muted-foreground text-sm">
+                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
+                  <span>Autocomplétion lors de la saisie</span>
+                </div>
+                <div class="flex gap-2 items-center text-muted-foreground text-sm">
+                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
+                  <span>Gain de temps considérable</span>
+                </div>
               </div>
             </div>
             <div class="lg:order-2 order-1">
               <ImageZoomable
-                src="/pictures/create_sections.png"
-                alt="Création de sections"
-                class="border border-border rounded-xl shadow-2xl w-full"
+                src="/pictures/add_presence_with_autocompletion.png"
+                alt="Import rapide du personnel"
+                class="border border-border rounded-lg shadow-2xl w-full"
               />
             </div>
           </div>
@@ -78,28 +86,32 @@
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div>
               <ImageZoomable
-                src="/pictures/add_presence.png"
-                alt="Ajout de présence"
-                class="border border-border rounded-xl shadow-2xl w-full"
+                src="/pictures/manage_presence_in_sections_views.png"
+                alt="Contrôle des présences"
+                class="border border-border rounded-lg shadow-2xl w-full"
               />
             </div>
             <div>
               <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:user-plus" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Enregistrement rapide</h3>
+                <Icon name="lucide:user-check" size="32" class="text-primary" />
+                <h3 class="font-bold md:text-3xl text-2xl">Contrôle des présences</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Ajoutez rapidement les présences avec les informations essentielles : nom, prénom, section et statut du
-                livret de service. Interface optimisée pour la saisie rapide.
+                Enregistrez rapidement les présences lors des rentrées en service. Visualisez l'état des livrets de
+                service et exportez les données pour vos rapports.
               </p>
               <div class="space-y-2">
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Saisie rapide et intuitive</span>
+                  <span>Saisie rapide des présences</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Validation automatique</span>
+                  <span>Statistiques en temps réel</span>
+                </div>
+                <div class="flex gap-2 items-center text-muted-foreground text-sm">
+                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
+                  <span>Export Excel des présences</span>
                 </div>
               </div>
             </div>
@@ -108,33 +120,33 @@
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
               <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:users" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Vue d'ensemble claire</h3>
+                <Icon name="lucide:calendar-off" size="32" class="text-primary" />
+                <h3 class="font-bold md:text-3xl text-2xl">Suivi des absences</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Visualisez toutes les présences par section avec tri et statistiques. Interface claire et
-                professionnelle pour une gestion optimale.
+                Consultez et triez facilement les absences de votre personnel. Vue d'ensemble complète avec statistiques
+                par section et filtres avancés.
               </p>
               <div class="space-y-2">
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Tri par nom, section ou date</span>
+                  <span>Vue d'ensemble des absences</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Statistiques en temps réel</span>
+                  <span>Tri par nom ou section</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Export et gestion avancée</span>
+                  <span>Statistiques détaillées</span>
                 </div>
               </div>
             </div>
             <div class="lg:order-2 order-1">
               <ImageZoomable
-                src="/pictures/manage_presence_in_sections_views.png"
-                alt="Gestion des présences"
-                class="border border-border rounded-xl shadow-2xl w-full"
+                src="/pictures/absences.png"
+                alt="Suivi des absences"
+                class="border border-border rounded-lg shadow-2xl w-full"
               />
             </div>
           </div>

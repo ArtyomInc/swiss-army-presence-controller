@@ -110,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@/ui/link';
+import { Link } from '@/ui/link'
 
 useSeoMeta({
   description:

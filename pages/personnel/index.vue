@@ -208,7 +208,11 @@
       </CardContent>
 
       <CardFooter v-if="people.length > 0" class="flex justify-between">
-        <Button variant="ghost" class="hover:bg-destructive/10 hover:text-destructive text-destructive" @click="showClearDialog = true">
+        <Button
+          variant="ghost"
+          class="hover:bg-destructive/10 hover:text-destructive text-destructive"
+          @click="showClearDialog = true"
+        >
           <Icon name="lucide:trash-2" size="20" class="mr-2" />
           Tout supprimer
         </Button>

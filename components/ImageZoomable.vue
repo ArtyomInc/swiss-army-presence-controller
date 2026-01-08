@@ -18,7 +18,7 @@
           </button>
 
           <div class="flex h-full items-center justify-center max-h-screen max-w-7xl p-4 relative w-full">
-            <img :src="src" :alt="alt" class="max-h-full max-w-full object-contain rounded-lg" @click.stop />
+            <img :src="src" :alt="alt" class="max-h-full max-w-full object-contain rounded-xl" @click.stop />
           </div>
         </div>
       </Transition>

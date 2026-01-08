@@ -386,7 +386,13 @@ const exportToExcel = async () => {
     const XLSX = await import('xlsx')
 
     // Préparer les données pour l'export
-    const exportData: Array<{ Grade: string; Nom: string; Prénom: string; Section: string; 'Livret de service': string }> = []
+    const exportData: Array<{
+      Grade: string
+      Nom: string
+      Prénom: string
+      Section: string
+      'Livret de service': string
+    }> = []
 
     // Trier les personnes par section
     sections.value.forEach((section) => {
