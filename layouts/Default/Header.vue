@@ -18,7 +18,7 @@
       </NuxtLink>
 
       <div class="flex gap-1 items-center ml-auto">
-        <nav class="gap-1 hidden items-center md:flex">
+        <nav class="gap-1 hidden items-center lg:flex">
           <Link variant="ghost" to="/" :class="{ 'bg-accent text-accent-foreground': $route.path === '/' }">
             <Icon name="lucide:home" size="16" class="mr-1.5" />
             Accueil
@@ -67,13 +67,13 @@
           </Link>
         </nav>
 
-        <Button variant="ghost" size="sm" class="md:hidden" @click="toggleMobileMenu">
+        <Button variant="ghost" size="sm" class="lg:hidden" @click="toggleMobileMenu">
           <Icon name="lucide:menu" size="20" />
         </Button>
       </div>
     </div>
 
-    <div v-show="mobileMenuOpen" class="bg-muted/50 border-t md:hidden">
+    <div v-show="mobileMenuOpen" class="bg-muted/50 border-t lg:hidden">
       <nav class="flex flex-col py-4 space-y-2">
         <Link
           to="/"
