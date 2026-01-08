@@ -5,27 +5,10 @@
         <CardTitle>Enregistrement des Présences</CardTitle>
         <CardDescription>Ajoutez une personne à une section pour enregistrer sa présence</CardDescription>
       </CardHeader>
-      <CardContent v-if="sectionNames.length === 0">
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Icon name="lucide:alert-triangle" />
-            </EmptyMedia>
-            <EmptyTitle>Aucune section configurée</EmptyTitle>
-            <EmptyDescription>Vous devez d'abord configurer au moins une section</EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Link href="/sections">
-              <Icon name="lucide:settings" size="20" class="mr-2" />
-              Configurer les sections
-            </Link>
-          </EmptyContent>
-        </Empty>
-      </CardContent>
-      <CardContent v-else class="flex flex-col gap-4">
+      <CardContent class="flex flex-col gap-4">
         <div class="gap-1.5 grid items-center w-full">
           <Label for="grade">Grade :</Label>
-          <Input id="grade" v-model="userForm.grade" placeholder="Sdt" @keyup.enter="handleSubmit" />
+          <Input id="grade" v-model="userForm.grade" placeholder="ex: Sdt" @keyup.enter="handleSubmit" />
         </div>
 
         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
@@ -34,7 +17,7 @@
             <PersonAutocompleteInput
               id="firstname"
               v-model="userForm.firstName"
-              placeholder="Jean"
+              placeholder="ex: Jean"
               :people="personnelList"
               search-field="firstName"
               @person-selected="handlePersonSelected"
@@ -46,7 +29,7 @@
             <PersonAutocompleteInput
               id="lastname"
               v-model="userForm.lastName"
-              placeholder="Du Jardin"
+              placeholder="ex: Du Jardin"
               :people="personnelList"
               search-field="lastName"
               @person-selected="handlePersonSelected"
@@ -61,7 +44,7 @@
             id="section"
             v-model="userForm.section"
             :sections="availableSections"
-            placeholder="1ère Cp"
+            placeholder="ex: Kdo"
             @enter="handleSubmit"
           />
         </div>
@@ -71,7 +54,7 @@
           <Label for="hasServiceBooklet">Livret de service</Label>
         </div>
       </CardContent>
-      <CardFooter v-if="sectionNames.length > 0" class="flex justify-end">
+      <CardFooter class="flex justify-end">
         <Button :disabled="!canSubmit" class="min-w-[120px]" @click="handleSubmit">
           <template v-if="isSubmitting">
             <Spinner class="mr-2" />
@@ -129,7 +112,6 @@
 import type { PersonReference } from '~/types/presence'
 
 import { Checkbox } from '@/ui/checkbox'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Link } from '@/ui/link'
 import { Spinner } from '@/ui/spinner'
 import PersonAutocompleteInput from '~/components/PersonAutocompleteInput.vue'
@@ -191,8 +173,7 @@ const canSubmit = computed(() => {
     userForm.firstName?.trim() &&
     userForm.lastName?.trim() &&
     userForm.grade?.trim() &&
-    userForm.section &&
-    sectionNames.value.length > 0 &&
+    userForm.section?.trim() &&
     !isSubmitting.value
   )
 })

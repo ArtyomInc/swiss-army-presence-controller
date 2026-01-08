@@ -9,7 +9,7 @@
               {{ people.length }} personne{{ people.length > 1 ? 's' : '' }} dans la liste de référence
             </CardDescription>
           </div>
-          <div class="flex gap-2">
+          <div v-if="people.length > 0" class="flex gap-2">
             <Dialog v-model:open="dialogImportOpen">
               <form>
                 <DialogTrigger as-child>
@@ -53,7 +53,7 @@
                 </DialogContent>
               </form>
             </Dialog>
-            <Button v-if="people.length > 0" variant="outline" @click="showAddDialog = true">
+            <Button variant="outline" @click="showAddDialog = true">
               <Icon name="lucide:user-plus" size="20" class="mr-2" />
               Ajouter
             </Button>
@@ -70,6 +70,51 @@
             <EmptyTitle>Aucune personne dans la liste</EmptyTitle>
             <EmptyDescription>Importez un fichier XLSX pour commencer</EmptyDescription>
           </EmptyHeader>
+          <EmptyContent>
+            <Dialog v-model:open="dialogImportOpen">
+              <form>
+                <DialogTrigger as-child>
+                  <Button>
+                    <Icon name="lucide:upload" size="20" class="mr-2" />
+                    Importer
+                  </Button>
+                </DialogTrigger>
+                <DialogContent class="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Import un fichier</DialogTitle>
+                    <DialogDescription>Format de fichier accepté : .xlsx, .xls </DialogDescription>
+                  </DialogHeader>
+                  Le format suivant doit être respecté pour que l'import fonctionne correctement :
+                  <ul class="list-disc list-inside mt-2">
+                    <li>Colonne A : Grade</li>
+                    <li>Colonne B : Nom, Prénom (séparés par une virgule)</li>
+                    <li>Colonne C : Section</li>
+                  </ul>
+                  <p class="mt-2 text-muted-foreground text-sm">
+                    Note: Les 3 colonnes sont obligatoires. La colonne Section sera utilisée pour la validation lors de
+                    l'ajout de présences.
+                  </p>
+
+                  <DialogFooter>
+                    <DialogClose as-child>
+                      <Button variant="outline"> Cancel </Button>
+                    </DialogClose>
+                    <input
+                      ref="fileInputRef"
+                      type="file"
+                      accept=".xlsx,.xls"
+                      class="hidden"
+                      @change="handleFileSelect"
+                    />
+                    <Button @click="triggerFileInput">
+                      <Icon name="lucide:upload" size="20" class="mr-2" />
+                      Importer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </form>
+            </Dialog>
+          </EmptyContent>
         </Empty>
       </CardContent>
 
@@ -279,8 +324,17 @@
 <script setup lang="ts">
 import type { PersonReference } from '~/types/presence'
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/ui/dialog'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { usePersonReference } from '~/composables/usePersonReference'
 
 useSeoMeta({

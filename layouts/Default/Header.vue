@@ -24,16 +24,6 @@
             Accueil
           </Link>
           <Link
-            to="/sections"
-            variant="ghost"
-            :class="{
-              'bg-accent text-accent-foreground': $route.path === '/sections' && !$route.path.includes('/sections/')
-            }"
-          >
-            <Icon name="lucide:circle-pile" size="16" class="mr-1.5" />
-            Sections
-          </Link>
-          <Link
             to="/personnel"
             variant="ghost"
             :class="{ 'bg-accent text-accent-foreground': $route.path === '/personnel' }"
@@ -91,17 +81,6 @@
         >
           <Icon name="lucide:home" size="16" class="mr-1.5" />
           Accueil
-        </Link>
-        <Link
-          to="/sections"
-          variant="ghost"
-          :class="{
-            'bg-accent text-accent-foreground': $route.path === '/sections' && !$route.path.includes('/sections/')
-          }"
-          @click="mobileMenuOpen = false"
-        >
-          <Icon name="lucide:settings" size="16" class="mr-1.5" />
-          Sections
         </Link>
         <Link
           to="/personnel"
