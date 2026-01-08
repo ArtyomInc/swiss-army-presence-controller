@@ -53,31 +53,36 @@
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
               <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:file-spreadsheet" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Import rapide du personnel</h3>
+                <Icon name="lucide:clipboard-check" size="32" class="text-primary" />
+                <h3 class="font-bold md:text-3xl text-2xl">Enregistrement des présences</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Importez facilement votre liste de personnel depuis un fichier Excel pour gagner du temps. Remplissez automatiquement les noms lors de l'enregistrement des présences grâce à l'autocomplétion.
+                Tracez facilement l'arrivée de votre compagnie lors des rentrées en service. Enregistrez les
+                informations essentielles et consultez les statistiques en temps réel par section.
               </p>
               <div class="space-y-2">
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Import Excel de la liste du personnel</span>
+                  <span>Saisie rapide (nom, prénom, section, grade)</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Autocomplétion lors de la saisie</span>
+                  <span>Possession du livret de service</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Gain de temps considérable</span>
+                  <span>Statistiques en temps réel par section</span>
+                </div>
+                <div class="flex gap-2 items-center text-muted-foreground text-sm">
+                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
+                  <span>Export Excel pour rapports</span>
                 </div>
               </div>
             </div>
             <div class="lg:order-2 order-1">
               <ImageZoomable
-                src="/pictures/add_presence_with_autocompletion.png"
-                alt="Import rapide du personnel"
+                src="/pictures/manage_presence_in_sections_views.png"
+                alt="Enregistrement des présences"
                 class="border border-border rounded-lg shadow-2xl w-full"
               />
             </div>
@@ -86,32 +91,28 @@
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div>
               <ImageZoomable
-                src="/pictures/manage_presence_in_sections_views.png"
-                alt="Contrôle des présences"
+                src="/pictures/add_presence_with_autocompletion.png"
+                alt="Fonctionnalités avancées"
                 class="border border-border rounded-lg shadow-2xl w-full"
               />
             </div>
             <div>
               <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:user-check" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Contrôle des présences</h3>
+                <Icon name="lucide:sparkles" size="32" class="text-primary" />
+                <h3 class="font-bold md:text-3xl text-2xl">Fonctionnalités avancées</h3>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Enregistrez rapidement les présences lors des rentrées en service. Visualisez l'état des livrets de
-                service et exportez les données pour vos rapports.
+                Importez votre liste de soldat depuis Excel pour débloquer des fonctionnalités avancées : autocomplétion
+                lors de la saisie et détection automatique des absences.
               </p>
               <div class="space-y-2">
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Saisie rapide des présences</span>
+                  <span>Import Excel de votre liste de soldat</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Statistiques en temps réel</span>
-                </div>
-                <div class="flex gap-2 items-center text-muted-foreground text-sm">
-                  <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Export Excel des présences</span>
+                  <span>Autocomplétion des noms lors de la saisie</span>
                 </div>
               </div>
             </div>
@@ -119,18 +120,26 @@
 
           <div class="gap-12 grid items-center lg:grid-cols-2">
             <div class="lg:order-1 order-2">
-              <div class="flex gap-3 items-center mb-4">
-                <Icon name="lucide:calendar-off" size="32" class="text-primary" />
-                <h3 class="font-bold md:text-3xl text-2xl">Suivi des absences</h3>
+              <div class="flex flex-col gap-2 mb-4">
+                <div class="flex gap-3 items-center">
+                  <Icon name="lucide:user-x" size="32" class="text-primary" />
+                  <h3 class="font-bold md:text-3xl text-2xl">Suivi des absences</h3>
+                </div>
+                <div
+                  class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-xs w-fit"
+                >
+                  <Icon name="lucide:sparkles" size="12" />
+                  Nécessite l'import de la liste des soldats
+                </div>
               </div>
               <p class="mb-6 text-lg text-muted-foreground">
-                Consultez et triez facilement les absences de votre personnel. Vue d'ensemble complète avec statistiques
-                par section et filtres avancés.
+                Identifiez automatiquement qui n'est pas entré en service en comparant votre liste de soldat importée
+                avec les présences enregistrées. Idéal pour les rapports d'effectifs.
               </p>
               <div class="space-y-2">
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Vue d'ensemble des absences</span>
+                  <span>Vue d'ensemble des absents</span>
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
@@ -138,7 +147,7 @@
                 </div>
                 <div class="flex gap-2 items-center text-muted-foreground text-sm">
                   <Icon name="lucide:check-circle" size="16" class="text-green-500" />
-                  <span>Statistiques détaillées</span>
+                  <span>Statistiques détaillées par section</span>
                 </div>
               </div>
             </div>
