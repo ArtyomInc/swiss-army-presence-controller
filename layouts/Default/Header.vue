@@ -58,6 +58,14 @@
             Présences
           </Link>
           <Link
+            to="/absences"
+            variant="ghost"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/absences' }"
+          >
+            <Icon name="lucide:user-x" size="16" class="mr-1.5" />
+            Absences
+          </Link>
+          <Link
             to="/a-propos"
             variant="ghost"
             :class="{ 'bg-accent text-accent-foreground': $route.path === '/a-propos' }"
@@ -121,6 +129,15 @@
         >
           <Icon name="lucide:list-checks" size="16" class="mr-1.5" />
           Présences
+        </Link>
+        <Link
+          to="/absences"
+          variant="ghost"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/absences' }"
+          @click="mobileMenuOpen = false"
+        >
+          <Icon name="lucide:user-x" size="16" class="mr-1.5" />
+          Absences
         </Link>
         <Link
           to="/a-propos"

@@ -65,9 +65,7 @@ const filteredSuggestions = computed(() => {
   }
 
   const query = inputValue.value.toLowerCase()
-  return props.sections
-    .filter((section) => section.toLowerCase().includes(query))
-    .slice(0, 10) // Limiter à 10 suggestions
+  return props.sections.filter((section) => section.toLowerCase().includes(query)).slice(0, 10) // Limiter à 10 suggestions
 })
 
 // Synchroniser avec le v-model parent
