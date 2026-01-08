@@ -15,7 +15,7 @@
             <EmptyDescription>Vous devez d'abord configurer au moins une section</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Link href="/controller">
+            <Link href="/sections">
               <Icon name="lucide:settings" size="20" class="mr-2" />
               Configurer les sections
             </Link>
@@ -57,18 +57,13 @@
 
         <div class="gap-1.5 grid items-center w-full">
           <Label for="section">Section :</Label>
-          <Select v-model="userForm.section">
-            <SelectTrigger id="section" class="w-full">
-              <SelectValue placeholder="Sélectionner une section" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <template v-for="section in sectionNames" :key="section">
-                  <SelectItem :value="section">{{ section }}</SelectItem>
-                </template>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <SectionInput
+            id="section"
+            v-model="userForm.section"
+            :sections="availableSections"
+            placeholder="1ère Cp"
+            @enter="handleSubmit"
+          />
         </div>
 
         <div class="flex gap-1.5 items-center w-full">
@@ -124,9 +119,7 @@
         </div>
       </CardContent>
       <CardFooter>
-        <Link href="/controller/presences" class="w-full">
-          Voir toutes les présences <Icon name="lucide:users" size="20" />
-        </Link>
+        <Link href="/presences" class="w-full"> Voir toutes les présences <Icon name="lucide:users" size="20" /> </Link>
       </CardFooter>
     </Card>
   </div>
@@ -140,6 +133,7 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { Link } from '@/ui/link'
 import { Spinner } from '@/ui/spinner'
 import PersonAutocompleteInput from '~/components/PersonAutocompleteInput.vue'
+import SectionInput from '~/components/SectionInput.vue'
 import { usePersonReference } from '~/composables/usePersonReference'
 import { usePresenceController } from '~/composables/usePresenceController'
 
@@ -164,11 +158,32 @@ const userForm = reactive<{
 
 const isSubmitting = ref(false)
 
+// Combiner les sections configurées et les sections des références du personnel
+const availableSections = computed(() => {
+  const sections = new Set<string>()
+
+  // Ajouter les sections configurées
+  sectionNames.value.forEach((section) => sections.add(section))
+
+  // Ajouter les sections uniques du personnel
+  personnelList.value.forEach((person) => {
+    if (person.section) {
+      sections.add(person.section)
+    }
+  })
+
+  return Array.from(sections).sort()
+})
+
 // Gérer la sélection d'une personne depuis l'autocomplétion
 const handlePersonSelected = (person: PersonReference) => {
   userForm.grade = person.grade
   userForm.firstName = person.firstName
   userForm.lastName = person.lastName
+  // Pré-remplir aussi la section si disponible
+  if (person.section) {
+    userForm.section = person.section
+  }
 }
 
 const canSubmit = computed(() => {

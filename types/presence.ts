@@ -18,6 +18,7 @@ export interface PersonReference {
   firstName: string
   lastName: string
   grade: string
+  section?: string
   createdAt: Date
   importedFrom?: string
 }

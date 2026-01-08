@@ -10,11 +10,49 @@
             </CardDescription>
           </div>
           <div class="flex gap-2">
-            <input ref="fileInputRef" type="file" accept=".xlsx,.xls" class="hidden" @change="handleFileSelect" />
-            <Button @click="triggerFileInput">
-              <Icon name="lucide:upload" size="20" class="mr-2" />
-              Importer
-            </Button>
+            <Dialog v-model:open="dialogImportOpen">
+              <form>
+                <DialogTrigger as-child>
+                  <Button variant="outline">
+                    <Icon name="lucide:upload" size="20" class="mr-2" />
+                    Importer
+                  </Button>
+                </DialogTrigger>
+                <DialogContent class="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Import un fichier</DialogTitle>
+                    <DialogDescription>Format de fichier accepté : .xlsx, .xls </DialogDescription>
+                  </DialogHeader>
+                  Le format suivant doit être respecté pour que l'import fonctionne correctement :
+                  <ul class="list-disc list-inside mt-2">
+                    <li>Colonne A : Grade</li>
+                    <li>Colonne B : Nom, Prénom (séparés par une virgule)</li>
+                    <li>Colonne C : Section</li>
+                  </ul>
+                  <p class="mt-2 text-muted-foreground text-sm">
+                    Note: Les 3 colonnes sont obligatoires. La colonne Section sera utilisée pour la validation lors de
+                    l'ajout de présences.
+                  </p>
+
+                  <DialogFooter>
+                    <DialogClose as-child>
+                      <Button variant="outline"> Cancel </Button>
+                    </DialogClose>
+                    <input
+                      ref="fileInputRef"
+                      type="file"
+                      accept=".xlsx,.xls"
+                      class="hidden"
+                      @change="handleFileSelect"
+                    />
+                    <Button @click="triggerFileInput">
+                      <Icon name="lucide:upload" size="20" class="mr-2" />
+                      Importer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </form>
+            </Dialog>
             <Button v-if="people.length > 0" variant="outline" @click="showAddDialog = true">
               <Icon name="lucide:user-plus" size="20" class="mr-2" />
               Ajouter
@@ -32,12 +70,6 @@
             <EmptyTitle>Aucune personne dans la liste</EmptyTitle>
             <EmptyDescription>Importez un fichier XLSX pour commencer</EmptyDescription>
           </EmptyHeader>
-          <EmptyContent>
-            <Button @click="triggerFileInput">
-              <Icon name="lucide:upload" size="20" class="mr-2" />
-              Importer un fichier
-            </Button>
-          </EmptyContent>
         </Empty>
       </CardContent>
 
@@ -86,6 +118,17 @@
                   <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                 </div>
               </TableHead>
+              <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('section')">
+                <div class="flex gap-2 items-center">
+                  Section
+                  <Icon
+                    v-if="sortField === 'section'"
+                    :name="sortOrder === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                    size="14"
+                  />
+                  <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
+                </div>
+              </TableHead>
               <TableHead>Importé depuis</TableHead>
               <TableHead class="text-right">Actions</TableHead>
             </TableRow>
@@ -95,6 +138,7 @@
               <TableCell class="font-medium">{{ person.grade }}</TableCell>
               <TableCell class="font-medium">{{ person.firstName }}</TableCell>
               <TableCell class="font-medium">{{ person.lastName }}</TableCell>
+              <TableCell class="font-medium">{{ person.section || '-' }}</TableCell>
               <TableCell class="text-muted-foreground text-sm">
                 {{ person.importedFrom || 'Ajout manuel' }}
               </TableCell>
@@ -236,7 +280,7 @@
 import type { PersonReference } from '~/types/presence'
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { usePersonReference } from '~/composables/usePersonReference'
 
 useSeoMeta({
@@ -249,8 +293,9 @@ const { addPerson, clearAll: clearAllPeople, importFromFile, people, removePerso
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const searchQuery = ref('')
-const sortField = ref<'grade' | 'firstName' | 'lastName'>('lastName')
+const sortField = ref<'grade' | 'firstName' | 'lastName' | 'section'>('lastName')
 const sortOrder = ref<'asc' | 'desc'>('asc')
+const dialogImportOpen = ref(false)
 
 const showAddDialog = ref(false)
 const personToEdit = ref<PersonReference | null>(null)
@@ -289,6 +334,10 @@ const filteredAndSortedPeople = computed(() => {
     let aValue = a[sortField.value]
     let bValue = b[sortField.value]
 
+    // Gérer les valeurs undefined (pour section optionnelle)
+    if (aValue === undefined) aValue = ''
+    if (bValue === undefined) bValue = ''
+
     if (typeof aValue === 'string' && typeof bValue === 'string') {
       aValue = aValue.toLowerCase()
       bValue = bValue.toLowerCase()
@@ -304,7 +353,7 @@ const filteredAndSortedPeople = computed(() => {
   return filtered
 })
 
-const toggleSort = (field: 'grade' | 'firstName' | 'lastName') => {
+const toggleSort = (field: 'grade' | 'firstName' | 'lastName' | 'section') => {
   if (sortField.value === field) {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   } else {
@@ -318,6 +367,7 @@ const triggerFileInput = () => {
 }
 
 const handleFileSelect = async (event: Event) => {
+  dialogImportOpen.value = false
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
 

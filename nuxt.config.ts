@@ -100,23 +100,23 @@ export default defineNuxtConfig({
         {
           description: 'Ajouter rapidement une nouvelle présence',
           icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
-          name: 'Enregistrer présence',
-          short_name: 'Enregistrer',
-          url: '/controller/register?source=shortcut'
+          name: 'Ajouter présence',
+          short_name: 'Ajouter présence',
+          url: '/ajouter-presence?source=shortcut'
         },
         {
           description: 'Consulter toutes les présences enregistrées',
           icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
           name: 'Voir présences',
           short_name: 'Présences',
-          url: '/controller/presences?source=shortcut'
+          url: '/presences?source=shortcut'
         },
         {
           description: 'Configurer les sections militaires',
           icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
           name: 'Gérer sections',
           short_name: 'Sections',
-          url: '/controller?source=shortcut'
+          url: '/sections?source=shortcut'
         }
       ],
       start_url: '/',

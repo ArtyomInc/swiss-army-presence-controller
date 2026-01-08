@@ -24,40 +24,44 @@
             Accueil
           </Link>
           <Link
-            to="/controller"
+            to="/sections"
             variant="ghost"
             :class="{
-              'bg-accent text-accent-foreground': $route.path === '/controller' && !$route.path.includes('/controller/')
+              'bg-accent text-accent-foreground': $route.path === '/sections' && !$route.path.includes('/sections/')
             }"
           >
-            <Icon name="lucide:settings" size="16" class="mr-1.5" />
+            <Icon name="lucide:circle-pile" size="16" class="mr-1.5" />
             Sections
           </Link>
           <Link
-            to="/controller/personnel"
+            to="/personnel"
             variant="ghost"
-            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/personnel' }"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/personnel' }"
           >
             <Icon name="lucide:users" size="16" class="mr-1.5" />
             Personnel
           </Link>
           <Link
-            to="/controller/register"
+            to="/ajouter-presence"
             variant="ghost"
-            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/register' }"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/ajouter-presence' }"
           >
             <Icon name="lucide:user-plus" size="16" class="mr-1.5" />
-            Enregistrer
+            Ajouter présence
           </Link>
           <Link
-            to="/controller/presences"
+            to="/presences"
             variant="ghost"
-            :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/presences' }"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/presences' }"
           >
             <Icon name="lucide:list-checks" size="16" class="mr-1.5" />
             Présences
           </Link>
-          <Link to="/about" variant="ghost" :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }">
+          <Link
+            to="/a-propos"
+            variant="ghost"
+            :class="{ 'bg-accent text-accent-foreground': $route.path === '/a-propos' }"
+          >
             <Icon name="lucide:info" size="16" class="mr-1.5" />
             À propos
           </Link>
@@ -81,10 +85,10 @@
           Accueil
         </Link>
         <Link
-          to="/controller"
+          to="/sections"
           variant="ghost"
           :class="{
-            'bg-accent text-accent-foreground': $route.path === '/controller' && !$route.path.includes('/controller/')
+            'bg-accent text-accent-foreground': $route.path === '/sections' && !$route.path.includes('/sections/')
           }"
           @click="mobileMenuOpen = false"
         >
@@ -92,36 +96,36 @@
           Sections
         </Link>
         <Link
-          to="/controller/personnel"
+          to="/personnel"
           variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/personnel' }"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/personnel' }"
           @click="mobileMenuOpen = false"
         >
           <Icon name="lucide:users" size="16" class="mr-1.5" />
           Personnel
         </Link>
         <Link
-          to="/controller/register"
+          to="/ajouter-presence"
           variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/register' }"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/ajouter-presence' }"
           @click="mobileMenuOpen = false"
         >
           <Icon name="lucide:user-plus" size="16" class="mr-1.5" />
-          Enregistrer
+          Ajouter présence
         </Link>
         <Link
-          to="/controller/presences"
+          to="/presences"
           variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/controller/presences' }"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/presences' }"
           @click="mobileMenuOpen = false"
         >
           <Icon name="lucide:list-checks" size="16" class="mr-1.5" />
           Présences
         </Link>
         <Link
-          to="/about"
+          to="/a-propos"
           variant="ghost"
-          :class="{ 'bg-accent text-accent-foreground': $route.path === '/about' }"
+          :class="{ 'bg-accent text-accent-foreground': $route.path === '/a-propos' }"
           @click="mobileMenuOpen = false"
         >
           <Icon name="lucide:info" size="16" class="mr-1.5" />

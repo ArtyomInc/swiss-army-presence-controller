@@ -30,9 +30,9 @@
             <EmptyDescription>Commencez par ajouter des personnes à vos sections</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Link href="/controller/register">
+            <Link href="/ajouter-presence">
               <Icon name="lucide:user-plus" size="20" class="mr-2" />
-              Enregistrer des présences
+              Ajouter des présences
             </Link>
           </EmptyContent>
         </Empty>
@@ -207,7 +207,7 @@
             <Input id="edit-lastname" v-model="editFormLastName" placeholder="Du Jardin" />
           </div>
           <div class="flex gap-2 items-center">
-            <Checkbox id="edit-booklet" v-model:checked="editFormHasServiceBooklet" />
+            <Checkbox id="edit-booklet" v-model="editFormHasServiceBooklet" />
             <Label for="edit-booklet" class="cursor-pointer">Livret de service</Label>
           </div>
         </div>
@@ -335,7 +335,8 @@ const editPerson = (person: Person) => {
   editFormGrade.value = person.grade
   editFormFirstName.value = person.firstName
   editFormLastName.value = person.lastName
-  editFormHasServiceBooklet.value = person.hasServiceBooklet
+  // Force conversion en boolean pour éviter les problèmes avec undefined
+  editFormHasServiceBooklet.value = Boolean(person.hasServiceBooklet)
 }
 
 const cancelEdit = () => {

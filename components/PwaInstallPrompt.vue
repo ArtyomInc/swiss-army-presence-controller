@@ -42,49 +42,37 @@
 </template>
 
 <script setup lang="ts">
+import { useLocalStorage } from '@vueuse/core'
+
 interface DismissalData {
   timestamp: number
   count: number
   permanent: boolean
 }
 
-const DISMISSAL_KEY = 'pwa-install-dismissal'
 const REPROMPT_DAYS = 7
 const MAX_DISMISSALS = 3
 
 const pwa = usePWA()
-const dismissed = ref(false)
-const dismissalData = ref<DismissalData | null>(null)
+const dismissalData = useLocalStorage<DismissalData | null>('pwa-install-dismissal', null)
 const showIOSInstructions = ref(false)
+const dismissed = ref(false)
 
 const isIOS = computed(() => {
   if (!import.meta.client) return false
   return /iPhone|iPad|iPod/.test(navigator.userAgent)
 })
 
-// Migration: supprimer l'ancien système de dismissal
-if (import.meta.client) {
-  const oldDismissal = localStorage.getItem('pwa-install-dismissed')
-  if (oldDismissal === 'true') {
-    localStorage.removeItem('pwa-install-dismissed')
+// Vérifier l'expiration au chargement
+onMounted(() => {
+  if (!dismissalData.value) {
+    dismissed.value = false
+    return
   }
 
-  // Vérifier l'expiration au chargement
-  const stored = localStorage.getItem(DISMISSAL_KEY)
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored) as DismissalData
-      dismissalData.value = parsed
-      const daysSince = (Date.now() - parsed.timestamp) / (1000 * 60 * 60 * 24)
-
-      if (parsed.permanent || daysSince < REPROMPT_DAYS) {
-        dismissed.value = true
-      }
-    } catch {
-      localStorage.removeItem(DISMISSAL_KEY)
-    }
-  }
-}
+  const daysSince = (Date.now() - dismissalData.value.timestamp) / (1000 * 60 * 60 * 24)
+  dismissed.value = dismissalData.value.permanent || daysSince < REPROMPT_DAYS
+})
 
 const isInstallable = computed(() => {
   return pwa?.showInstallPrompt && !dismissed.value
@@ -102,26 +90,21 @@ const handleInstall = async () => {
     await pwa?.install()
     dismissed.value = true
     // Nettoyer les données de dismissal lors de l'installation
-    if (import.meta.client) {
-      localStorage.removeItem(DISMISSAL_KEY)
-    }
+    dismissalData.value = null
   }
 }
 
 const handleDismiss = () => {
-  if (import.meta.client) {
-    const currentCount = dismissalData.value?.count || 0
-    const newCount = currentCount + 1
+  const currentCount = dismissalData.value?.count || 0
+  const newCount = currentCount + 1
 
-    const data: DismissalData = {
-      count: newCount,
-      permanent: newCount >= MAX_DISMISSALS,
-      timestamp: Date.now()
-    }
-
-    localStorage.setItem(DISMISSAL_KEY, JSON.stringify(data))
-    dismissalData.value = data
+  const data: DismissalData = {
+    count: newCount,
+    permanent: newCount >= MAX_DISMISSALS,
+    timestamp: Date.now()
   }
+
+  dismissalData.value = data
   dismissed.value = true
 }
 </script>

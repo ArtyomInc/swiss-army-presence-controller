@@ -19,11 +19,11 @@
             et open source.
           </p>
           <div class="flex flex-col gap-4 justify-center sm:flex-row">
-            <Link href="/controller">
+            <Link href="/sections" class="justify-center">
               <Icon name="lucide:play-circle" size="20" />
               Commencer maintenant
             </Link>
-            <Link href="/about">
+            <Link href="/a-propos">
               <Icon name="lucide:info" size="20" />
               En savoir plus
             </Link>

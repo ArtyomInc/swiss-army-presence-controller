@@ -17,7 +17,8 @@
       "Bash(bunx nuxt dev:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(cat:*)"
     ]
   }
 }

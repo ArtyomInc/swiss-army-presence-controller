@@ -1,27 +1,26 @@
+import { useLocalStorage } from '@vueuse/core'
+
 import type { PersonReference } from '~/types/presence'
 
-export const usePersonReference = () => {
-  const people = ref<PersonReference[]>([])
-
-  const initializeData = () => {
-    if (import.meta.client) {
-      const stored = localStorage.getItem('person-references')
-      if (stored) {
-        people.value = JSON.parse(stored).map((p: { createdAt: string }) => ({
+// État global partagé avec localStorage direct
+const people = useLocalStorage<PersonReference[]>('person-references', [], {
+  serializer: {
+    read: (v: string) => {
+      try {
+        return JSON.parse(v).map((p: { createdAt: string }) => ({
           ...p,
           createdAt: new Date(p.createdAt)
         }))
+      } catch {
+        return []
       }
-    }
+    },
+    write: (v: PersonReference[]) => JSON.stringify(v)
   }
+})
 
-  const saveData = () => {
-    if (import.meta.client) {
-      localStorage.setItem('person-references', JSON.stringify(people.value))
-    }
-  }
-
-  const addPerson = (firstName: string, lastName: string, grade: string, importedFrom?: string) => {
+export const usePersonReference = () => {
+  const addPerson = (firstName: string, lastName: string, grade: string, importedFrom?: string, section?: string) => {
     if (!firstName.trim() || !lastName.trim() || !grade.trim()) {
       return null
     }
@@ -44,11 +43,11 @@ export const usePersonReference = () => {
       grade: grade.trim(),
       id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
       importedFrom,
-      lastName: lastName.trim()
+      lastName: lastName.trim(),
+      section: section?.trim()
     }
 
     people.value.push(person)
-    saveData()
     return person
   }
 
@@ -56,7 +55,7 @@ export const usePersonReference = () => {
     const index = people.value.findIndex((p) => p.id === id)
     if (index === -1) return false
 
-    // Vérifier les duplicatas (sauf pour la personne en cours de modification)
+    // Vérifier les duplicata (sauf pour la personne en cours de modification)
     const isDuplicate = people.value.some(
       (p, idx) =>
         idx !== index &&
@@ -69,32 +68,31 @@ export const usePersonReference = () => {
       return false
     }
 
-    people.value[index] = {
-      ...people.value[index],
-      firstName: firstName.trim(),
-      grade: grade.trim(),
-      lastName: lastName.trim()
-    }
+    // Réassignation complète pour forcer la synchronisation avec localStorage
+    people.value = people.value.map((p, i) =>
+      i === index
+        ? {
+            ...p,
+            firstName: firstName.trim(),
+            grade: grade.trim(),
+            lastName: lastName.trim()
+          }
+        : p
+    )
 
-    saveData()
     return true
   }
 
   const removePerson = (id: string) => {
-    const index = people.value.findIndex((p) => p.id === id)
-    if (index > -1) {
-      people.value.splice(index, 1)
-      saveData()
-      return true
-    }
-    return false
+    // Réassignation complète pour forcer la synchronisation avec localStorage
+    const newPeople = people.value.filter((p) => p.id !== id)
+    if (newPeople.length === people.value.length) return false
+    people.value = newPeople
+    return true
   }
 
   const clearAll = () => {
     people.value = []
-    if (import.meta.client) {
-      localStorage.removeItem('person-references')
-    }
   }
 
   const importFromFile = async (file: File): Promise<{ success: number; duplicates: number; errors: string[] }> => {
@@ -109,18 +107,20 @@ export const usePersonReference = () => {
         const data = await file.arrayBuffer()
         const workbook = XLSX.read(data, { type: 'array' })
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
-        const rows = XLSX.utils.sheet_to_json<{ Grade?: string; 'Nom, prénom'?: string }>(firstSheet, { header: 1 })
+        const rows = XLSX.utils.sheet_to_json<unknown[]>(firstSheet, { header: 1 })
 
         // Ignorer la première ligne (en-tête)
         for (let i = 1; i < rows.length; i++) {
           const row = rows[i] as unknown[]
-          if (!row || row.length < 2) continue
+          if (!row || row.length < 3) continue
 
+          // Format: Colonne A (0) = Grade, Colonne B (1) = Nom/Prénom, Colonne C (2) = Section
           const grade = String(row[0] || '').trim()
           const fullName = String(row[1] || '').trim()
+          const section = String(row[2] || '').trim()
 
-          if (!grade || !fullName) {
-            result.errors.push(`Ligne ${i + 1}: Format invalide`)
+          if (!grade || !fullName || !section) {
+            result.errors.push(`Ligne ${i + 1}: Grade, nom ou section manquant`)
             continue
           }
 
@@ -130,7 +130,7 @@ export const usePersonReference = () => {
             continue
           }
 
-          const added = addPerson(firstName, lastName, grade, file.name)
+          const added = addPerson(firstName, lastName, grade, file.name, section)
           if (added) {
             result.success++
           } else {
@@ -178,15 +178,10 @@ export const usePersonReference = () => {
     return { firstName, lastName }
   }
 
-  onMounted(() => {
-    initializeData()
-  })
-
   return {
     addPerson,
     clearAll,
     importFromFile,
-    initializeData,
     people: readonly(people),
     removePerson,
     updatePerson
