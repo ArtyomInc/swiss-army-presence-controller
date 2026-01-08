@@ -17,7 +17,7 @@
       <div class="max-w-none mb-6 prose prose-muted">
         <p>
           Vos données sont précieuses et sensibles. C'est pourquoi le projet a été conçu avec un accent particulier sur
-          la simplicité et la sécurité :
+          la simplicité et la sécurité, en conformité avec la législation suisse sur la protection des données (LPD) :
         </p>
       </div>
 
@@ -27,7 +27,7 @@
           <div>
             <h3 class="font-semibold mb-1">Stockage 100% local</h3>
             <p class="text-muted-foreground text-sm">
-              Toutes les données restent sur votre appareil. Aucune transmission externe.
+              Toutes les données restent sur votre appareil. Aucune transmission externe, aucun serveur distant.
             </p>
           </div>
         </div>
@@ -36,7 +36,29 @@
           <Icon name="lucide:shield-check" size="20" class="dark:text-blue-400 flex-shrink-0 mt-0.5 text-blue-600" />
           <div>
             <h3 class="font-semibold mb-1">Aucun tracking</h3>
-            <p class="text-muted-foreground text-sm">Seules les statistiques de visite anonymes via Umami.</p>
+            <p class="text-muted-foreground text-sm">
+              Seules les statistiques de visite anonymes via Umami. Aucune donnée personnelle collectée.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-start">
+          <Icon name="lucide:lock" size="20" class="dark:text-purple-400 flex-shrink-0 mt-0.5 text-purple-600" />
+          <div>
+            <h3 class="font-semibold mb-1">Conforme LPD</h3>
+            <p class="text-muted-foreground text-sm">
+              Respect de la Loi fédérale sur la protection des données (LPD) suisse.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-start">
+          <Icon name="lucide:swiss-franc" size="20" class="dark:text-red-400 flex-shrink-0 mt-0.5 text-red-600" />
+          <div>
+            <h3 class="font-semibold mb-1">Développé en Suisse</h3>
+            <p class="text-muted-foreground text-sm">
+              Solution locale développée par un appointé, pour l'Armée suisse.
+            </p>
           </div>
         </div>
       </div>
@@ -70,25 +92,25 @@
       </div>
 
       <div class="gap-4 grid grid-cols-2 md:grid-cols-3">
-        <div class="bg-card border p-4 rounded-lg text-center">
+        <Card class="items-center justify-center p-4 text-center">
           <Icon name="lucide:code" size="24" class="mb-2 mx-auto text-green-500" />
           <h3 class="font-semibold text-sm">Nuxt 3</h3>
-        </div>
-        <div class="bg-card border p-4 rounded-lg text-center">
+        </Card>
+        <Card class="items-center justify-center p-4 text-center">
           <Icon name="lucide:palette" size="24" class="mb-2 mx-auto text-purple-500" />
           <h3 class="font-semibold text-sm">Tailwind CSS</h3>
-        </div>
-        <div class="bg-card border p-4 rounded-lg text-center">
+        </Card>
+        <Card class="items-center justify-center p-4 text-center">
           <Icon name="lucide:database" size="24" class="mb-2 mx-auto text-orange-500" />
           <h3 class="font-semibold text-sm">LocalStorage</h3>
-        </div>
+        </Card>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Link } from '@/ui/link'
+import { Link } from '@/ui/link';
 
 useSeoMeta({
   description:

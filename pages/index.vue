@@ -3,12 +3,21 @@
     <section class="md:px-10 px-4 py-20 text-center">
       <div class="max-w-screen-xl mx-auto">
         <div class="mb-8">
-          <div
-            class="bg-primary/10 font-medium gap-2 inline-flex items-center mb-6 px-3 py-1 rounded-full text-primary text-sm"
-          >
+          <div class="flex flex-wrap gap-2 justify-center mb-4">
+
+            <div
+            class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
+            >
             <Icon name="lucide:shield-check" size="14" />
             100% Open Source
           </div>
+          <div
+          class="bg-primary/10 font-medium gap-2 inline-flex items-center px-3 py-1 rounded-full text-primary text-sm"
+          >
+          <Icon name="lucide:server-off" size="14" />
+          Aucune donnée n'est collectée
+        </div>
+      </div>
           <h1
             class="bg-clip-text bg-gradient-to-r font-bold from-primary mb-6 md:text-6xl text-4xl text-transparent to-primary/60"
           >

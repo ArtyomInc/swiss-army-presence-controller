@@ -16,9 +16,9 @@
           <Dialog>
             <DialogTrigger as-child>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                class="hover:bg-destructive hover:text-destructive-foreground text-destructive"
+                class="hover:bg-destructive/10 hover:text-destructive text-destructive"
               >
                 <Icon name="lucide:trash-2" size="16" />
               </Button>
@@ -52,9 +52,9 @@
           <Dialog>
             <DialogTrigger as-child>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                class="hover:bg-destructive hover:text-destructive-foreground text-destructive"
+                class="hover:bg-destructive/90 hover:text-destructive text-destructive"
               >
                 <Icon name="lucide:trash-2" size="16" />
               </Button>
