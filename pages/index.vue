@@ -19,7 +19,7 @@
             et open source.
           </p>
           <div class="flex flex-col gap-4 justify-center sm:flex-row">
-            <Link href="/sections" class="justify-center">
+            <Link href="/ajouter-presence" class="justify-center">
               <Icon name="lucide:play-circle" size="20" />
               Commencer maintenant
             </Link>
@@ -136,7 +136,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@/ui/link'
+import { Link } from '@/ui/link';
 
 useSeoMeta({
   description:

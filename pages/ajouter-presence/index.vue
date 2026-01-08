@@ -140,21 +140,21 @@ const userForm = reactive<{
 
 const isSubmitting = ref(false)
 
-// Combiner les sections configurées et les sections des références du personnel
+// Combiner les sections des personnes présentes et les sections du personnel de référence
 const availableSections = computed(() => {
-  const sections = new Set<string>()
+  const sectionsSet = new Set<string>()
 
-  // Ajouter les sections configurées
-  sectionNames.value.forEach((section) => sections.add(section))
+  // Ajouter les sections des personnes présentes
+  sectionNames.value.forEach((section) => sectionsSet.add(section))
 
-  // Ajouter les sections uniques du personnel
+  // Ajouter les sections uniques du personnel de référence
   personnelList.value.forEach((person) => {
     if (person.section) {
-      sections.add(person.section)
+      sectionsSet.add(person.section)
     }
   })
 
-  return Array.from(sections).sort()
+  return Array.from(sectionsSet).sort()
 })
 
 // Gérer la sélection d'une personne depuis l'autocomplétion

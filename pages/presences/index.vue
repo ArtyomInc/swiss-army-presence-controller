@@ -40,86 +40,83 @@
     </Card>
 
     <div v-if="totalPeople > 0" class="gap-6 grid">
-      <Card v-for="section in sections" :key="section.name">
+      <Card v-for="section in sections" :key="section">
         <CardHeader>
           <div class="flex items-center justify-between">
             <div>
               <CardTitle class="flex gap-2 items-center">
                 <Icon name="lucide:users" size="20" />
-                {{ section.name }}
+                {{ section }}
               </CardTitle>
               <CardDescription>
-                {{ getPeopleBySection(section.name).length }} personne{{
-                  getPeopleBySection(section.name).length > 1 ? 's' : ''
+                {{ getPeopleBySection(section).length }} personne{{
+                  getPeopleBySection(section).length > 1 ? 's' : ''
                 }}
-                présente{{ getPeopleBySection(section.name).length > 1 ? 's' : '' }}
+                présente{{ getPeopleBySection(section).length > 1 ? 's' : '' }}
               </CardDescription>
             </div>
             <div class="text-right">
               <div class="font-bold text-2xl text-primary">
-                {{ getPeopleBySection(section.name).length }}
+                {{ getPeopleBySection(section).length }}
               </div>
             </div>
           </div>
         </CardHeader>
 
-        <CardContent v-if="getSortedPeopleBySection(section.name).length > 0">
+        <CardContent v-if="getSortedPeopleBySection(section).length > 0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('grade', section.name)">
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('grade', section)">
                   <div class="flex gap-2 items-center">
                     Grade
                     <Icon
-                      v-if="getSortConfig(section.name).field === 'grade'"
-                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      v-if="getSortConfig(section).field === 'grade'"
+                      :name="getSortConfig(section).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
                       size="14"
                     />
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                   </div>
                 </TableHead>
-                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('firstName', section.name)">
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('firstName', section)">
                   <div class="flex gap-2 items-center">
                     Prénom
                     <Icon
-                      v-if="getSortConfig(section.name).field === 'firstName'"
-                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      v-if="getSortConfig(section).field === 'firstName'"
+                      :name="getSortConfig(section).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
                       size="14"
                     />
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                   </div>
                 </TableHead>
-                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('lastName', section.name)">
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('lastName', section)">
                   <div class="flex gap-2 items-center">
                     Nom
                     <Icon
-                      v-if="getSortConfig(section.name).field === 'lastName'"
-                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      v-if="getSortConfig(section).field === 'lastName'"
+                      :name="getSortConfig(section).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
                       size="14"
                     />
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                   </div>
                 </TableHead>
-                <TableHead
-                  class="cursor-pointer hover:bg-muted/50"
-                  @click="toggleSort('hasServiceBooklet', section.name)"
-                >
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('hasServiceBooklet', section)">
                   <div class="flex gap-2 items-center">
                     Livret
                     <Icon
-                      v-if="getSortConfig(section.name).field === 'hasServiceBooklet'"
-                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      v-if="getSortConfig(section).field === 'hasServiceBooklet'"
+                      :name="getSortConfig(section).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
                       size="14"
                     />
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
                   </div>
                 </TableHead>
-                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('registeredAt', section.name)">
+                <TableHead class="cursor-pointer hover:bg-muted/50" @click="toggleSort('registeredAt', section)">
                   <div class="flex gap-2 items-center">
                     Enregistré à
                     <Icon
-                      v-if="getSortConfig(section.name).field === 'registeredAt'"
-                      :name="getSortConfig(section.name).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                      v-if="getSortConfig(section).field === 'registeredAt'"
+                      :name="getSortConfig(section).order === 'asc' ? 'lucide:chevron-up' : 'lucide:chevron-down'"
                       size="14"
                     />
                     <Icon v-else name="lucide:chevrons-up-down" size="14" class="opacity-50" />
@@ -129,11 +126,7 @@
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow
-                v-for="person in getSortedPeopleBySection(section.name)"
-                :key="person.id"
-                class="hover:bg-muted/50"
-              >
+              <TableRow v-for="person in getSortedPeopleBySection(section)" :key="person.id" class="hover:bg-muted/50">
                 <TableCell class="font-medium">{{ person.grade }}</TableCell>
                 <TableCell class="font-medium">{{ person.firstName }}</TableCell>
                 <TableCell class="font-medium">{{ person.lastName }}</TableCell>
@@ -273,8 +266,8 @@ watch(
   sections,
   (newSections) => {
     newSections.forEach((section) => {
-      if (!sortConfigs.value[section.name]) {
-        sortConfigs.value[section.name] = { field: 'lastName', order: 'asc' }
+      if (!sortConfigs.value[section]) {
+        sortConfigs.value[section] = { field: 'lastName', order: 'asc' }
       }
     })
   },
@@ -397,7 +390,7 @@ const exportToExcel = async () => {
 
     // Trier les personnes par section
     sections.value.forEach((section) => {
-      const sectionPeople = getPeopleBySection(section.name)
+      const sectionPeople = getPeopleBySection(section)
       sectionPeople.forEach((person) => {
         exportData.push({
           Grade: person.grade,

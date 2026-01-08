@@ -72,7 +72,7 @@ bun run preview
 
 Les données sont stockées localement dans le **LocalStorage** du navigateur :
 
-- `presence-sections` - Liste des sections configurées
-- `presence-people` - Liste des personnes enregistrées
+- `presence-people` - Liste des personnes enregistrées (les sections sont dérivées automatiquement)
+- `person-references` - Liste de référence du personnel
 
 Aucune donnée n'est envoyée à un serveur externe.

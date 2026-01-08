@@ -1,24 +1,8 @@
 import { useLocalStorage } from '@vueuse/core'
 
-import type { Person, Section } from '~/types/presence'
+import type { Person } from '~/types/presence'
 
 // État global partagé avec localStorage direct
-const sections = useLocalStorage<Section[]>('presence-sections', [], {
-  serializer: {
-    read: (v: string) => {
-      try {
-        return JSON.parse(v).map((s: { createdAt: string; name: string }) => ({
-          ...s,
-          createdAt: new Date(s.createdAt)
-        }))
-      } catch {
-        return []
-      }
-    },
-    write: (v: Section[]) => JSON.stringify(v)
-  }
-})
-
 const people = useLocalStorage<Person[]>('presence-people', [], {
   serializer: {
     read: (v: string) => {
@@ -48,60 +32,18 @@ const people = useLocalStorage<Person[]>('presence-people', [], {
 })
 
 export const usePresenceController = () => {
-  // Wrapper réactif pour les noms de sections
-  // Utilise watch pour synchroniser les mutations directes du tableau
-  const sectionNames = ref<string[]>(sections.value.map((s) => s.name))
-
-  // Synchroniser sectionNames -> sections
-  watch(
-    sectionNames,
-    (newNames) => {
-      const validNames = newNames.filter((name) => name.trim())
-      sections.value = validNames.map((name) => ({
-        createdAt: sections.value.find((s) => s.name === name.trim())?.createdAt || new Date(),
-        name: name.trim()
-      }))
-    },
-    { deep: true }
-  )
-
-  // Synchroniser sections -> sectionNames
-  watch(
-    sections,
-    (newSections) => {
-      const newNames = newSections.map((s) => s.name)
-      if (JSON.stringify(sectionNames.value) !== JSON.stringify(newNames)) {
-        sectionNames.value = newNames
+  // Dériver les sections automatiquement depuis les personnes présentes
+  const sections = computed(() => {
+    const sectionsSet = new Set<string>()
+    people.value.forEach((person) => {
+      if (person.section?.trim()) {
+        sectionsSet.add(person.section.trim())
       }
-    },
-    { deep: true }
-  )
+    })
+    return Array.from(sectionsSet).sort()
+  })
 
-  const addSection = (name: string) => {
-    if (name.trim() && !sections.value.find((s) => s.name === name.trim())) {
-      // Réassignation complète pour forcer la synchronisation avec localStorage
-      sections.value = [
-        ...sections.value,
-        {
-          createdAt: new Date(),
-          name: name.trim()
-        }
-      ]
-    }
-  }
-
-  const removeSection = (name: string) => {
-    // Réassignation complète pour forcer la synchronisation avec localStorage
-    sections.value = sections.value.filter((s) => s.name !== name)
-  }
-
-  const setSections = (newSections: string[]) => {
-    const validSections = newSections.filter((name) => name.trim())
-    sections.value = validSections.map((name) => ({
-      createdAt: new Date(),
-      name: name.trim()
-    }))
-  }
+  const sectionNames = computed(() => sections.value)
 
   const addPerson = (
     firstName: string,
@@ -154,10 +96,6 @@ export const usePresenceController = () => {
     return true
   }
 
-  const clearSections = () => {
-    sections.value = []
-  }
-
   const clearPeople = () => {
     people.value = []
   }
@@ -169,24 +107,20 @@ export const usePresenceController = () => {
   const getPresenceStats = () => {
     const stats: Record<string, number> = {}
     sections.value.forEach((section) => {
-      stats[section.name] = getPeopleBySection(section.name).length
+      stats[section] = getPeopleBySection(section).length
     })
     return stats
   }
 
   return {
     addPerson,
-    addSection,
     clearPeople,
-    clearSections,
     getPeopleBySection,
     getPresenceStats,
     people: readonly(people),
     removePerson,
-    removeSection,
     sectionNames,
-    sections: readonly(sections),
-    setSections,
+    sections,
     updatePerson
   }
 }

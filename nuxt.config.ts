@@ -110,13 +110,6 @@ export default defineNuxtConfig({
           name: 'Voir présences',
           short_name: 'Présences',
           url: '/presences?source=shortcut'
-        },
-        {
-          description: 'Configurer les sections militaires',
-          icons: [{ sizes: '192x192', src: '/pwa-192x192.png', type: 'image/png' }],
-          name: 'Gérer sections',
-          short_name: 'Sections',
-          url: '/sections?source=shortcut'
         }
       ],
       start_url: '/',
