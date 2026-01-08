@@ -386,7 +386,7 @@ const exportToExcel = async () => {
     const XLSX = await import('xlsx')
 
     // Préparer les données pour l'export
-    const exportData: Array<{ Grade: string; Nom: string; Prénom: string; Section: string }> = []
+    const exportData: Array<{ Grade: string; Nom: string; Prénom: string; Section: string; 'Livret de service': string }> = []
 
     // Trier les personnes par section
     sections.value.forEach((section) => {
@@ -394,6 +394,7 @@ const exportToExcel = async () => {
       sectionPeople.forEach((person) => {
         exportData.push({
           Grade: person.grade,
+          'Livret de service': person.hasServiceBooklet ? 'Oui' : 'Non',
           Nom: person.lastName,
           Prénom: person.firstName,
           Section: person.section
@@ -412,7 +413,8 @@ const exportToExcel = async () => {
       { wch: 10 }, // Grade
       { wch: 20 }, // Nom
       { wch: 20 }, // Prénom
-      { wch: 15 } // Section
+      { wch: 15 }, // Section
+      { wch: 18 } // Livret de service
     ]
 
     // Ajouter un tableau avec filtres automatiques
