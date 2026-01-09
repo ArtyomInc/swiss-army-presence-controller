@@ -19,7 +19,9 @@
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
       "Bash(cat:*)",
-      "Bash(bun run lint:*)"
+      "Bash(bun run lint:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)"
     ]
   }
 }
