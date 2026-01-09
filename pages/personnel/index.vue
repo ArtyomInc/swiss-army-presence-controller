@@ -246,6 +246,15 @@
             <Label for="dialog-lastname">Nom :</Label>
             <Input id="dialog-lastname" v-model="editForm.lastName" placeholder="Du Jardin" />
           </div>
+          <div class="gap-1.5 grid items-center w-full">
+            <Label for="dialog-section">Section :</Label>
+            <SectionInput
+              id="dialog-section"
+              v-model="editForm.section"
+              :sections="availableSections"
+              placeholder="ex: Kdo"
+            />
+          </div>
           <div
             v-if="editError"
             class="bg-destructive/10 border border-destructive p-3 rounded-lg text-destructive text-sm"
@@ -339,7 +348,9 @@ import {
   DialogTrigger
 } from '@/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
+import SectionInput from '~/components/SectionInput.vue'
 import { usePersonReference } from '~/composables/usePersonReference'
+import { usePresenceController } from '~/composables/usePresenceController'
 
 useSeoMeta({
   description:
@@ -348,6 +359,7 @@ useSeoMeta({
 })
 
 const { addPerson, clearAll: clearAllPeople, importFromFile, people, removePerson, updatePerson } = usePersonReference()
+const { sectionNames } = usePresenceController()
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const searchQuery = ref('')
@@ -364,10 +376,28 @@ const importResult = ref<{ success: number; duplicates: number; errors: string[]
 const editForm = reactive({
   firstName: '',
   grade: '',
-  lastName: ''
+  lastName: '',
+  section: ''
 })
 
 const editError = ref('')
+
+// Combiner les sections des personnes présentes et les sections du personnel de référence
+const availableSections = computed(() => {
+  const sectionsSet = new Set<string>()
+
+  // Ajouter les sections des personnes présentes
+  sectionNames.value.forEach((section) => sectionsSet.add(section))
+
+  // Ajouter les sections uniques du personnel de référence
+  people.value.forEach((person) => {
+    if (person.section) {
+      sectionsSet.add(person.section)
+    }
+  })
+
+  return Array.from(sectionsSet).sort()
+})
 
 const canSaveEdit = computed(() => {
   return editForm.grade.trim() && editForm.firstName.trim() && editForm.lastName.trim()
@@ -448,6 +478,7 @@ const editPerson = (person: PersonReference) => {
   editForm.grade = person.grade
   editForm.firstName = person.firstName
   editForm.lastName = person.lastName
+  editForm.section = person.section || ''
   editError.value = ''
 }
 
@@ -457,6 +488,7 @@ const handleDialogClose = () => {
   editForm.grade = ''
   editForm.firstName = ''
   editForm.lastName = ''
+  editForm.section = ''
   editError.value = ''
 }
 
@@ -465,7 +497,13 @@ const saveEdit = () => {
 
   if (personToEdit.value) {
     // Modification
-    const success = updatePerson(personToEdit.value.id, editForm.firstName, editForm.lastName, editForm.grade)
+    const success = updatePerson(
+      personToEdit.value.id,
+      editForm.firstName,
+      editForm.lastName,
+      editForm.grade,
+      editForm.section || undefined
+    )
     if (success) {
       handleDialogClose()
     } else {
@@ -473,7 +511,13 @@ const saveEdit = () => {
     }
   } else {
     // Ajout
-    const added = addPerson(editForm.firstName, editForm.lastName, editForm.grade)
+    const added = addPerson(
+      editForm.firstName,
+      editForm.lastName,
+      editForm.grade,
+      undefined,
+      editForm.section || undefined
+    )
     if (added) {
       handleDialogClose()
     } else {

@@ -51,7 +51,7 @@ export const usePersonReference = () => {
     return person
   }
 
-  const updatePerson = (id: string, firstName: string, lastName: string, grade: string) => {
+  const updatePerson = (id: string, firstName: string, lastName: string, grade: string, section?: string) => {
     const index = people.value.findIndex((p) => p.id === id)
     if (index === -1) return false
 
@@ -75,7 +75,8 @@ export const usePersonReference = () => {
             ...p,
             firstName: firstName.trim(),
             grade: grade.trim(),
-            lastName: lastName.trim()
+            lastName: lastName.trim(),
+            section: section?.trim()
           }
         : p
     )
