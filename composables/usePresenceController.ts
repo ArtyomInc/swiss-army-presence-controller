@@ -73,11 +73,18 @@ export const usePresenceController = () => {
     people.value = people.value.filter((p) => p.id !== id)
   }
 
-  const updatePerson = (id: string, firstName: string, lastName: string, grade: string, hasServiceBooklet: boolean) => {
+  const updatePerson = (
+    id: string,
+    firstName: string,
+    lastName: string,
+    grade: string,
+    hasServiceBooklet: boolean,
+    section: string
+  ) => {
     const index = people.value.findIndex((p) => p.id === id)
     if (index === -1) return false
 
-    if (!firstName.trim() || !lastName.trim() || !grade.trim()) {
+    if (!firstName.trim() || !lastName.trim() || !grade.trim() || !section.trim()) {
       return false
     }
 
@@ -89,7 +96,8 @@ export const usePresenceController = () => {
             firstName: firstName.trim(),
             grade: grade.trim(),
             hasServiceBooklet,
-            lastName: lastName.trim()
+            lastName: lastName.trim(),
+            section: section.trim()
           }
         : p
     )

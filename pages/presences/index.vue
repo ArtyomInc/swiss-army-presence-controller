@@ -199,6 +199,10 @@
             <Label for="edit-lastname">Nom :</Label>
             <Input id="edit-lastname" v-model="editFormLastName" placeholder="Du Jardin" />
           </div>
+          <div class="gap-1.5 grid items-center w-full">
+            <Label for="edit-section">Section :</Label>
+            <SectionInput id="edit-section" v-model="editFormSection" :sections="sections" placeholder="ex: Kdo" />
+          </div>
           <div class="flex gap-2 items-center">
             <Checkbox id="edit-booklet" v-model="editFormHasServiceBooklet" />
             <Label for="edit-booklet" class="cursor-pointer">Livret de service</Label>
@@ -238,6 +242,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/ui/empty'
 import { Label } from '@/ui/label'
 import { Link } from '@/ui/link'
+import SectionInput from '~/components/SectionInput.vue'
 import { usePresenceController } from '~/composables/usePresenceController'
 
 useSeoMeta({
@@ -254,10 +259,16 @@ const personToEdit = ref<Person | null>(null)
 const editFormGrade = ref('')
 const editFormFirstName = ref('')
 const editFormLastName = ref('')
+const editFormSection = ref('')
 const editFormHasServiceBooklet = ref(false)
 
 const canSaveEdit = computed(() => {
-  return editFormGrade.value.trim() && editFormFirstName.value.trim() && editFormLastName.value.trim()
+  return (
+    editFormGrade.value.trim() &&
+    editFormFirstName.value.trim() &&
+    editFormLastName.value.trim() &&
+    editFormSection.value.trim()
+  )
 })
 
 const sortConfigs = ref<Record<string, { field: string; order: 'asc' | 'desc' }>>({})
@@ -328,6 +339,7 @@ const editPerson = (person: Person) => {
   editFormGrade.value = person.grade
   editFormFirstName.value = person.firstName
   editFormLastName.value = person.lastName
+  editFormSection.value = person.section
   // Force conversion en boolean pour éviter les problèmes avec undefined
   editFormHasServiceBooklet.value = Boolean(person.hasServiceBooklet)
 }
@@ -337,6 +349,7 @@ const cancelEdit = () => {
   editFormGrade.value = ''
   editFormFirstName.value = ''
   editFormLastName.value = ''
+  editFormSection.value = ''
   editFormHasServiceBooklet.value = false
 }
 
@@ -348,7 +361,8 @@ const saveEdit = () => {
     editFormFirstName.value,
     editFormLastName.value,
     editFormGrade.value,
-    editFormHasServiceBooklet.value
+    editFormHasServiceBooklet.value,
+    editFormSection.value
   )
 
   if (success) {
